@@ -1,4 +1,4 @@
-package com.replavigame.replavigame;
+package com.replavigame;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
