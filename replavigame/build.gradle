@@ -32,6 +32,10 @@ dependencies {
 	//implementation 'org.springframework.cloud:spring-cloud-starter-config'
 	//implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 	//implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
+	// https://mvnrepository.com/artifact/org.modelmapper/modelmapper
+	implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.1.0'
+	// https://mvnrepository.com/artifact/org.postgresql/postgresql
+	implementation group: 'org.postgresql', name: 'postgresql', version: '42.3.4'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
 	annotationProcessor 'org.projectlombok:lombok'
