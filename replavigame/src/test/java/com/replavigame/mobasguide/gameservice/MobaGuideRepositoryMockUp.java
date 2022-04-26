@@ -1,4 +1,4 @@
-package com.replavigame.mobasguide;
+package com.replavigame.mobasguide.gameservice;
 
 import java.util.List;
 
