@@ -15,10 +15,12 @@ import com.replavigame.mobasguide.repository.MobaRoleRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 @DataJpaTest
-public class MobaGuideRepositoryMockUp {
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+final public class MobaGuideRepositoryMockUp {
 
     @Autowired
     private MobaGuideRepository mobaGuideRepository;
