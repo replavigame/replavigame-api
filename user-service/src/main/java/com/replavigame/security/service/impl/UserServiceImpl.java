@@ -91,20 +91,28 @@ public class UserServiceImpl implements UserService {
     public UserResponse update(UserRequest request, Long id) {
         var entity = userRepository.getUserById(id)
                 .orElseThrow(() -> new ResourceNotFoundExceptionRequest("User not found by id"));
-        var username = userRepository.getUserByUsername(request.getUsername())
-                .orElse(null);
-        if (username != null) {
-            throw new ResourceNotFoundExceptionRequest("Username not valid");
+        if (entity.getUsername() != request.getUsername()) {
+            var username = userRepository.getUserByUsername(request.getUsername())
+                    .orElse(null);
+            if (username != null) {
+                throw new ResourceNotFoundExceptionRequest("Username not valid");
+            }
         }
-        var email = userRepository.getUserByEmail(request.getEmail())
-                .orElse(null);
-        if (email != null) {
-            throw new ResourceNotFoundExceptionRequest("Email not valid");
+
+        if (entity.getNumber() != request.getNumber()) {
+            var number = userRepository.getUserByNumber(request.getNumber())
+                    .orElse(null);
+            if (number != null) {
+                throw new ResourceNotFoundExceptionRequest("Number not valid");
+            }
         }
-        var number = userRepository.getUserByNumber(request.getNumber())
-                .orElse(null);
-        if (number != null) {
-            throw new ResourceNotFoundExceptionRequest("Number not valid");
+
+        if (entity.getEmail() != request.getEmail()) {
+            var email = userRepository.getUserByEmail(request.getEmail())
+                    .orElse(null);
+            if (email != null) {
+                throw new ResourceNotFoundExceptionRequest("Email not valid");
+            }
         }
 
         entity.setBirthday(request.getBirthday());
