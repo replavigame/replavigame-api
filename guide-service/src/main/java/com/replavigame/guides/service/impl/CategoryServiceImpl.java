@@ -42,7 +42,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryResponse getById(Long id) {
         var entity = repository.getCategoryById(id)
-                .orElseThrow(() -> new ResourceNotFoundExceptionRequest("Category not found"));
+                .orElseThrow(() -> new ResourceNotFoundExceptionRequest("Category not found by id"));
         var response = mapper.map(entity, CategoryResponse.class);
         return response;
     }
@@ -64,7 +64,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryResponse update(CategoryRequest request, Long id) {
         var entity = repository.getCategoryById(id)
-                .orElseThrow(() -> new ResourceNotFoundExceptionRequest("Category not found"));
+                .orElseThrow(() -> new ResourceNotFoundExceptionRequest("Category not found by id"));
         entity.setGameId(request.getGameId());
         entity.setName(request.getName());
         try {

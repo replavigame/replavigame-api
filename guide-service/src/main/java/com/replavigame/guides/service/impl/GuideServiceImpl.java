@@ -101,7 +101,7 @@ public class GuideServiceImpl implements GuideService {
         try {
             guideRepository.deleteById(id);
         } catch (Exception e) {
-            throw new ResourceNotFoundExceptionRequest("Error ocurred while updating guide");
+            throw new ResourceNotFoundExceptionRequest("Error ocurred while deleting guide");
         }
     }
 
