@@ -56,7 +56,7 @@ public class CoachRepositoryMockText {
         coachRepository.save(coach);
 
         List<Coach> coachs = coachRepository.findAll();
-        Assertions.assertEquals(1L, coachs.size());
+        Assertions.assertEquals(2L, coachs.size());
     }
 
 }
