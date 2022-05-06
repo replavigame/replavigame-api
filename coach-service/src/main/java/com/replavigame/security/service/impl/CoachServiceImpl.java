@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 public class CoachServiceImpl implements CoachService {
 
     @Autowired
-    private CoachRepository userRepository;
+    private CoachRepository coachRepository;
 
     @Autowired
     private BCryptPasswordEncoder encoder;
@@ -30,7 +30,7 @@ public class CoachServiceImpl implements CoachService {
 
     @Override
     public List<CoachResponse> getAll() {
-        var entities = userRepository.findAll();
+        var entities = coachRepository.findAll();
         var response = entities.stream().map(entity -> mapper.map(entity, CoachResponse.class))
                 .collect(Collectors.toList());
         return response;
@@ -38,7 +38,7 @@ public class CoachServiceImpl implements CoachService {
 
     @Override
     public CoachResponse getById(Long id) {
-        var entity = userRepository.getCoachById(id)
+        var entity = coachRepository.getCoachById(id)
                 .orElseThrow(() -> new ResourceNotFoundExceptionRequest("User not found by id"));
         var response = mapper.map(entity, CoachResponse.class);
         return response;
@@ -46,7 +46,7 @@ public class CoachServiceImpl implements CoachService {
 
     @Override
     public CoachResponse getByUsernameAndPassword(AuthenticateRequest request) {
-        var entity = userRepository.getCoachByUsername(request.getUsername())
+        var entity = coachRepository.getCoachByUsername(request.getUsername())
                 .orElseThrow(() -> new ResourceNotFoundExceptionRequest("User not found by id"));
         var valid = encoder.matches(request.getPassword(), entity.getPassword());
         if (valid) {
@@ -58,25 +58,25 @@ public class CoachServiceImpl implements CoachService {
 
     @Override
     public CoachResponse create(CoachRequest request) {
-        var username = userRepository.getCoachByUsername(request.getUsername())
+        var username = coachRepository.getCoachByUsername(request.getUsername())
                 .orElse(null);
         if (username != null) {
             throw new ResourceNotFoundExceptionRequest("Username not valid");
         }
-        var email = userRepository.getCoachByEmail(request.getEmail())
+        var email = coachRepository.getCoachByEmail(request.getEmail())
                 .orElse(null);
         if (email != null) {
             throw new ResourceNotFoundExceptionRequest("Email not valid");
         }
-        var number = userRepository.getCoachByNumber(request.getNumber())
+        var number = coachRepository.getCoachByNumber(request.getNumber())
                 .orElse(null);
         if (number != null) {
             throw new ResourceNotFoundExceptionRequest("Number not valid");
         }
-        var nameCoach = userRepository.getCoachByNameCoach(request.getNameCoach())
+        var nameCoach = coachRepository.getCoachByNameCoach(request.getNameCoach())
                 .orElse(null);
         if (nameCoach != null) {
-            throw new ResourceNotFoundExceptionRequest("Number not valid");
+            throw new ResourceNotFoundExceptionRequest("Name coach not valid");
         }
 
         var entity = new Coach();
@@ -92,39 +92,53 @@ public class CoachServiceImpl implements CoachService {
         entity.setPoints(0L);
         var passwordEncrypt = encoder.encode(request.getPassword());
         entity.setPassword(passwordEncrypt);
+        entity.setUsername(request.getUsername());
 
         try {
-            userRepository.save(entity);
+            coachRepository.save(entity);
             var response = mapper.map(entity, CoachResponse.class);
             return response;
         } catch (Exception e) {
-            throw new ResourceNotFoundExceptionRequest("Error ocurred while creating user");
+            throw new ResourceNotFoundExceptionRequest("Error ocurred while creating coach");
         }
     }
 
     @Override
     public CoachResponse update(CoachRequest request, Long id) {
-        var entity = userRepository.getCoachById(id)
+        var entity = coachRepository.getCoachById(id)
                 .orElseThrow(() -> new ResourceNotFoundExceptionRequest("User not found by id"));
-        var username = userRepository.getCoachByUsername(request.getUsername())
-                .orElse(null);
-        if (username != null) {
-            throw new ResourceNotFoundExceptionRequest("Username not valid");
+
+        if (entity.getUsername() != request.getUsername()) {
+            var username = coachRepository.getCoachByUsername(request.getUsername())
+                    .orElse(null);
+
+            if (username != null) {
+                throw new ResourceNotFoundExceptionRequest("Username not valid");
+            }
         }
-        var email = userRepository.getCoachByEmail(request.getEmail())
-                .orElse(null);
-        if (email != null) {
-            throw new ResourceNotFoundExceptionRequest("Email not valid");
+
+        if (entity.getEmail() != request.getEmail()) {
+            var email = coachRepository.getCoachByEmail(request.getEmail())
+                    .orElse(null);
+            if (email != null) {
+                throw new ResourceNotFoundExceptionRequest("Email not valid");
+            }
         }
-        var number = userRepository.getCoachByNumber(request.getNumber())
-                .orElse(null);
-        if (number != null) {
-            throw new ResourceNotFoundExceptionRequest("Number not valid");
+
+        if (entity.getNumber() != request.getNumber()) {
+            var number = coachRepository.getCoachByNumber(request.getNumber())
+                    .orElse(null);
+            if (number != null) {
+                throw new ResourceNotFoundExceptionRequest("Number not valid");
+            }
         }
-        var nameCoach = userRepository.getCoachByNameCoach(request.getNameCoach())
-                .orElse(null);
-        if (nameCoach != null) {
-            throw new ResourceNotFoundExceptionRequest("Number not valid");
+
+        if (entity.getNameCoach() != request.getNameCoach()) {
+            var nameCoach = coachRepository.getCoachByNameCoach(request.getNameCoach())
+                    .orElse(null);
+            if (nameCoach != null) {
+                throw new ResourceNotFoundExceptionRequest("Name coach not valid");
+            }
         }
 
         entity.setBirthday(request.getBirthday());
@@ -136,25 +150,26 @@ public class CoachServiceImpl implements CoachService {
         entity.setName(request.getName());
         entity.setNameCoach(request.getNameCoach());
         entity.setNumber(request.getNumber());
-        entity.setPoints(0L);
+        entity.setUsername(request.getUsername());
+
         var passwordEncrypt = encoder.encode(request.getPassword());
         entity.setPassword(passwordEncrypt);
 
         try {
-            userRepository.save(entity);
+            coachRepository.save(entity);
             var response = mapper.map(entity, CoachResponse.class);
             return response;
         } catch (Exception e) {
-            throw new ResourceNotFoundExceptionRequest("Error ocurred while updating user");
+            throw new ResourceNotFoundExceptionRequest("Error ocurred while updating coach");
         }
     }
 
     @Override
     public void delete(Long id) {
         try {
-            userRepository.deleteById(id);
+            coachRepository.deleteById(id);
         } catch (Exception e) {
-            throw new ResourceNotFoundExceptionRequest("Error ocurred while deleting user");
+            throw new ResourceNotFoundExceptionRequest("Error ocurred while deleting coach");
         }
     }
 

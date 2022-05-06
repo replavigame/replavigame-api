@@ -24,41 +24,41 @@ import org.springframework.web.bind.annotation.RestController;
 public class CoachController {
 
     @Autowired
-    private CoachService userService;
+    private CoachService coachService;
 
     @GetMapping
     private ResponseEntity<List<CoachResponse>> getAll() {
-        var response = userService.getAll();
+        var response = coachService.getAll();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     private ResponseEntity<CoachResponse> geById(@PathVariable("id") Long id) {
-        var response = userService.getById(id);
+        var response = coachService.getById(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/authenticate")
     private ResponseEntity<CoachResponse> authenticateUser(@RequestBody AuthenticateRequest request) {
-        var response = userService.getByUsernameAndPassword(request);
+        var response = coachService.getByUsernameAndPassword(request);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping
     private ResponseEntity<CoachResponse> create(@RequestBody CoachRequest request) {
-        var response = userService.create(request);
+        var response = coachService.create(request);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     private ResponseEntity<CoachResponse> create(@RequestBody CoachRequest request, @PathVariable("id") Long id) {
-        var response = userService.update(request, id);
+        var response = coachService.update(request, id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     private ResponseEntity<?> delete(@PathVariable("id") Long id) {
-        userService.delete(id);
+        coachService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
