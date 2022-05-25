@@ -16,7 +16,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
-import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import static org.assertj.core.api.Assertions.*;
@@ -37,9 +36,6 @@ public class GuideServiceImplMockTest {
 
     @Spy
     private CategoryRepository categoryRepository;
-
-    @Spy
-    private ModelMapper mapper;
 
     @InjectMocks
     private GuideServiceImpl guideServiceImpl;

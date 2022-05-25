@@ -23,16 +23,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
-import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import static org.assertj.core.api.Assertions.*;
 
 @DataJpaTest
 public class CategoryServiceImplMockTest {
-
-    @Spy
-    private ModelMapper mapper;
 
     @Spy
     private CategoryRepository categoryRepository;
