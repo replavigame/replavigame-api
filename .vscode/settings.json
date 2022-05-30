@@ -1,5 +1,5 @@
 {
     "java.configuration.updateBuildConfiguration": "automatic",
-    "java.home": "C:\\Program Files\\Java\\jdk-17.0.3.1",
-    "java.jdt.ls.java.home": "C:\\Program Files\\Java\\jdk-17.0.3.1",
+    "git.ignoreLimitWarning": false ,
+    "java.home": "C:\\Program Files\\Java\\jdk-17.0.3.1"
 }
