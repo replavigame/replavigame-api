@@ -1,7 +1,7 @@
-package com.replavigame.coachingsession.service;
+package com.replavigame.coachingsession.coaching_session.service;
 
-import com.replavigame.coachingsession.dto.PlatformRequest;
-import com.replavigame.coachingsession.dto.PlatformResponse;
+import com.replavigame.coachingsession.coaching_session.dto.PlatformRequest;
+import com.replavigame.coachingsession.coaching_session.dto.PlatformResponse;
 
 import java.util.List;
 

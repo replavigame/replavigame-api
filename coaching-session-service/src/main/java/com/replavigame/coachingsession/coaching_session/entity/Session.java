@@ -1,4 +1,4 @@
-package com.replavigame.coachingsession.entity;
+package com.replavigame.coachingsession.coaching_session.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

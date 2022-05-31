@@ -1,7 +1,7 @@
-package com.replavigame.coachingsession.service;
+package com.replavigame.coachingsession.coaching_session.service;
 
-import com.replavigame.coachingsession.dto.SessionRequest;
-import com.replavigame.coachingsession.dto.SessionResponse;
+import com.replavigame.coachingsession.coaching_session.dto.SessionRequest;
+import com.replavigame.coachingsession.coaching_session.dto.SessionResponse;
 
 import java.util.Date;
 import java.util.List;

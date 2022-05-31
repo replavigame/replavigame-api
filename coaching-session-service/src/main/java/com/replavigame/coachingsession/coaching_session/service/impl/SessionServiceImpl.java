@@ -1,12 +1,11 @@
-package com.replavigame.coachingsession.service.impl;
+package com.replavigame.coachingsession.coaching_session.service.impl;
 
-import com.replavigame.coachingsession.dto.SessionRequest;
-import com.replavigame.coachingsession.dto.SessionResponse;
-import com.replavigame.coachingsession.entity.Session;
-import com.replavigame.coachingsession.repository.SessionRepository;
-import com.replavigame.coachingsession.service.SessionService;
+import com.replavigame.coachingsession.coaching_session.dto.SessionRequest;
+import com.replavigame.coachingsession.coaching_session.dto.SessionResponse;
+import com.replavigame.coachingsession.coaching_session.entity.Session;
+import com.replavigame.coachingsession.coaching_session.repository.SessionRepository;
+import com.replavigame.coachingsession.coaching_session.service.SessionService;
 import com.replavigame.coachingsession.exception.ResourceNotFoundExceptionRequest;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +18,30 @@ public class SessionServiceImpl implements SessionService {
     @Autowired
     private SessionRepository repository;
 
-    @Autowired
-    private ModelMapper mapper;
+    private SessionResponse convertToResponse(Session entity) {
+        SessionResponse response = new SessionResponse();
+        response.setId(entity.getId());
+        response.setName(entity.getName());
+        response.setEndDate(entity.getEndDate());
+        response.setStartDate(entity.getStartDate());
+        response.setAvailable(entity.getAvailable());
+        return response;
+    }
+
+    private Session convertToEntity(SessionRequest request) {
+        Session session = new Session();
+        session.setEndDate(request.getEndDate());
+        session.setStartDate(request.getStartDate());
+        session.setAvailable(request.getAvailable());
+        session.setName(request.getName());
+        return session;
+    }
+
 
     @Override
     public List<SessionResponse> getAll() {
         var entities = repository.findAll();
-        return entities.stream().map(entity -> mapper.map(entity, SessionResponse.class))
+        return entities.stream().map(this::convertToResponse)
                 .collect(Collectors.toList());
     }
 
@@ -33,7 +49,7 @@ public class SessionServiceImpl implements SessionService {
     public List<SessionResponse> getSessionsByRange(Date start, Date end) {
         var entities = repository.findAll();
         var filtering = entities.stream().filter(ent -> ent.getStartDate().compareTo(start) > 0 && ent.getEndDate().compareTo(end) < 0  );
-        return filtering.map(entity -> mapper.map(entity,SessionResponse.class)).collect(Collectors.toList());
+        return filtering.map(this::convertToResponse).collect(Collectors.toList());
     }
 
 
@@ -41,21 +57,18 @@ public class SessionServiceImpl implements SessionService {
     public SessionResponse getById(Long id) {
         var entity = repository.getSessionById(id)
                 .orElseThrow(() -> new ResourceNotFoundExceptionRequest("Session not found"));
-        return mapper.map(entity, SessionResponse.class);
+        return convertToResponse(entity);
     }
 
     @Override
     public SessionResponse create(SessionRequest sessionRequest) {
         var entity = new Session();
 
-        entity.setName(sessionRequest.getName());
-        entity.setStartDate(sessionRequest.getStartDate());
-        entity.setEndDate(sessionRequest.getEndDate());
-        entity.setAvailable(sessionRequest.getAvailable());
+        entity = convertToEntity(sessionRequest);
 
         try {
             repository.save(entity);
-            return mapper.map(entity, SessionResponse.class);
+            return convertToResponse(entity);
         } catch (Exception e) {
             throw new ResourceNotFoundExceptionRequest("Error occurred while creating session");
         }
@@ -71,9 +84,10 @@ public class SessionServiceImpl implements SessionService {
         entity.setStartDate(sessionRequest.getStartDate());
         entity.setEndDate(sessionRequest.getEndDate());
         entity.setAvailable(sessionRequest.getAvailable());
+
         try {
             repository.save(entity);
-            return mapper.map(entity, SessionResponse.class);
+            return convertToResponse(entity);
         } catch (Exception e) {
             throw new ResourceNotFoundExceptionRequest("Error occurred while updating Session");
         }

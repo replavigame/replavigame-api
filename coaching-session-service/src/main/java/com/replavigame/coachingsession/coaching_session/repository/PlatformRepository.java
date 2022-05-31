@@ -1,6 +1,6 @@
-package com.replavigame.coachingsession.repository;
+package com.replavigame.coachingsession.coaching_session.repository;
 
-import com.replavigame.coachingsession.entity.Platform;
+import com.replavigame.coachingsession.coaching_session.entity.Platform;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

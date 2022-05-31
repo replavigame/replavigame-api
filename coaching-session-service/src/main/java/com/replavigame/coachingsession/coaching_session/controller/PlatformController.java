@@ -1,11 +1,8 @@
-package com.replavigame.coachingsession.controller;
+package com.replavigame.coachingsession.coaching_session.controller;
 
-import com.replavigame.coachingsession.dto.PlatformRequest;
-import com.replavigame.coachingsession.dto.PlatformResponse;
-import com.replavigame.coachingsession.dto.SessionRequest;
-import com.replavigame.coachingsession.dto.SessionResponse;
-import com.replavigame.coachingsession.service.PlatformService;
-import com.replavigame.coachingsession.service.SessionService;
+import com.replavigame.coachingsession.coaching_session.dto.PlatformRequest;
+import com.replavigame.coachingsession.coaching_session.dto.PlatformResponse;
+import com.replavigame.coachingsession.coaching_session.service.PlatformService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -11,7 +11,7 @@ spring:
           searchPaths: config-data
           user-name: ${GIT_USER}
           password: ${GIT_PASSWORD}
-          default-label: "develop"
+          default-label: "feature/coaching-session-service"
   security:
     user:
       name: root

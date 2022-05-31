@@ -1,13 +1,12 @@
-package com.replavigame.coachingsession.service.impl;
+package com.replavigame.coachingsession.coaching_session.service.impl;
 
-import com.replavigame.coachingsession.dto.PlatformRequest;
-import com.replavigame.coachingsession.dto.PlatformResponse;
-import com.replavigame.coachingsession.entity.Platform;
-import com.replavigame.coachingsession.repository.PlatformRepository;
-import com.replavigame.coachingsession.repository.SessionRepository;
-import com.replavigame.coachingsession.service.PlatformService;
+import com.replavigame.coachingsession.coaching_session.dto.PlatformRequest;
+import com.replavigame.coachingsession.coaching_session.dto.PlatformResponse;
+import com.replavigame.coachingsession.coaching_session.entity.Platform;
+import com.replavigame.coachingsession.coaching_session.repository.PlatformRepository;
+import com.replavigame.coachingsession.coaching_session.repository.SessionRepository;
+import com.replavigame.coachingsession.coaching_session.service.PlatformService;
 import com.replavigame.coachingsession.exception.ResourceNotFoundExceptionRequest;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,21 +22,33 @@ public class PlatformServiceImpl implements PlatformService {
     @Autowired
     private SessionRepository sessionRepository;
 
-    @Autowired
-    private ModelMapper mapper;
+    private PlatformResponse convertToResponse(Platform entity) {
+        PlatformResponse response = new PlatformResponse();
+        response.setId(entity.getId());
+        response.setName(entity.getName());
+        response.setUrl(entity.getUrl());
+        response.setSession_id(entity.getSession().getId());
+        return response;
+    }
 
+    private Platform convertToEntity(PlatformRequest request) {
+        Platform platform = new Platform();
+        platform.setUrl(request.getUrl());
+        platform.setName(request.getUrl());
+        return platform;
+    }
 
     @Override
     public List<PlatformResponse> getAll() {
         var entities = platformRepository.findAll();
-        return entities.stream().map(entity -> mapper.map(entity, PlatformResponse.class))
+        return entities.stream().map(this::convertToResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<PlatformResponse> getAllBySessionId(Long id) {
         var entities = platformRepository.findAllBySessionId(id);
-        return entities.stream().map(entity -> mapper.map(entity, PlatformResponse.class))
+        return entities.stream().map(this::convertToResponse)
                 .collect(Collectors.toList());
     }
 
@@ -45,7 +56,7 @@ public class PlatformServiceImpl implements PlatformService {
     public PlatformResponse getById(Long id) {
         var entity = platformRepository.getPlatformById(id)
                 .orElseThrow(() -> new ResourceNotFoundExceptionRequest("Platform not found"));
-        return mapper.map(entity, PlatformResponse.class);
+        return convertToResponse(entity);
     }
 
     @Override
@@ -54,13 +65,11 @@ public class PlatformServiceImpl implements PlatformService {
         var session = sessionRepository.getSessionById(platformRequest.getSession_id())
                 .orElseThrow(() -> new ResourceNotFoundExceptionRequest("Session not found"));
 
-        entity.setSession(session);
-        entity.setName(platformRequest.getName());
-        entity.setUrl(platformRequest.getUrl());
+        entity = convertToEntity(platformRequest);
 
         try {
             platformRepository.save(entity);
-            return mapper.map(entity, PlatformResponse.class);
+            return convertToResponse(entity);
         } catch (Exception e) {
             throw new ResourceNotFoundExceptionRequest("Error occurred while creating platform");
         }
@@ -79,7 +88,7 @@ public class PlatformServiceImpl implements PlatformService {
 
         try {
             platformRepository.save(entity);
-            return mapper.map(entity, PlatformResponse.class);
+            return convertToResponse(entity);
         } catch (Exception e) {
             throw new ResourceNotFoundExceptionRequest("Error occurred while creating platform");
         }

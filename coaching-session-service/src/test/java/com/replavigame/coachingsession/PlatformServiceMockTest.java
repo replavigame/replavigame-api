@@ -1,14 +1,11 @@
 package com.replavigame.coachingsession;
 
-import com.replavigame.coachingsession.dto.PlatformResponse;
-import com.replavigame.coachingsession.entity.Platform;
-import com.replavigame.coachingsession.repository.PlatformRepository;
-import com.replavigame.coachingsession.service.PlatformService;
-import com.replavigame.coachingsession.service.impl.PlatformServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
+import com.replavigame.coachingsession.coaching_session.dto.PlatformResponse;
+import com.replavigame.coachingsession.coaching_session.entity.Platform;
+import com.replavigame.coachingsession.coaching_session.repository.PlatformRepository;
+import com.replavigame.coachingsession.coaching_session.service.PlatformService;
+import com.replavigame.coachingsession.coaching_session.service.impl.PlatformServiceImpl;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;

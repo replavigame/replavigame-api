@@ -1,4 +1,4 @@
-package com.replavigame.coachingsession.dto;
+package com.replavigame.coachingsession.coaching_session.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
