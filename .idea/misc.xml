@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
-    <file type="web" url="file://$PROJECT_DIR$/coach-report-service/coach-report-service" />
+    <file type="web" url="file://$PROJECT_DIR$/coach-report-service" />
     <file type="web" url="file://$PROJECT_DIR$/coach-service" />
     <file type="web" url="file://$PROJECT_DIR$/config-service" />
     <file type="web" url="file://$PROJECT_DIR$/detail-guide-service" />
@@ -13,7 +13,6 @@
     <file type="web" url="file://$PROJECT_DIR$/registry-service" />
     <file type="web" url="file://$PROJECT_DIR$/user-service" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="17" project-jdk-type="JavaSDK" />
   <component name="ProjectType">
     <option name="id" value="jpab" />
   </component>
