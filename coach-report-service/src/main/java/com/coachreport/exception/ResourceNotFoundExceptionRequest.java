@@ -1,4 +1,4 @@
-package com.coach.exception;
+package com.coachreport.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
