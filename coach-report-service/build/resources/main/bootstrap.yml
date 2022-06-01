@@ -1,6 +1,6 @@
 spring:
   application:
-    name: coaching-session-service
+    name: coach-report-service
   cloud:
     config:
       uri: http://localhost:8081

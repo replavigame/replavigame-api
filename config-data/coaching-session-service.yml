@@ -4,7 +4,7 @@ server:
 spring:
   h2:
     console:
-      enabled: true
+      enable: true
 
   #DB
   datasource:
