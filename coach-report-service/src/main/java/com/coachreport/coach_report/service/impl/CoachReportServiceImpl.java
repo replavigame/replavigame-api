@@ -8,10 +8,12 @@ import com.coachreport.coach_report.repository.CoachReportRepository;
 import com.coachreport.coach_report.service.CoachReportService;
 import com.coachreport.exception.ResourceNotFoundExceptionRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class CoachReportServiceImpl implements CoachReportService {
 
     @Autowired

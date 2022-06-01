@@ -2,7 +2,7 @@ package com.coachreport.coach_report.repository;
 
 import com.coachreport.coach_report.entity.CoachDocument;
 import org.springframework.data.jpa.repository.JpaRepository;
-
+import com.coachreport.coach_report.entity.CoachDocument;
 import java.util.List;
 import java.util.Optional;
 
