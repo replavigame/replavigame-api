@@ -56,3 +56,5 @@ fabric.properties
 *.json
 *.json
 *.json
+*.vscode
+*.idea

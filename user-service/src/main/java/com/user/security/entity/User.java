@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,6 +41,7 @@ public class User {
     private String lastName;
 
     @Column(name = "created_date")
+    @JsonFormat(pattern = "yyyy/MM/dd")
     private Date createdDate;
 
     @Column(name = "birthday")
