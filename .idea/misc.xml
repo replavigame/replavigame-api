@@ -13,6 +13,7 @@
     <file type="web" url="file://$PROJECT_DIR$/registry-service" />
     <file type="web" url="file://$PROJECT_DIR$/user-service" />
   </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="17" project-jdk-type="JavaSDK" />
   <component name="ProjectType">
     <option name="id" value="jpab" />
   </component>
