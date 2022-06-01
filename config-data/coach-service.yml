@@ -4,7 +4,7 @@ server:
 spring:
   h2:
     console:
-      enable: true
+      enabled: true
 
   #DB
   datasource:
@@ -30,7 +30,7 @@ spring:
     pattern:
       console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
 
-  eureka:
-    client:
-      serviceUrl:
-        defaultZone: http://localhost:8099/eureka/
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8099/eureka/
