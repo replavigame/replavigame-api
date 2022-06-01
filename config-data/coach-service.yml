@@ -4,11 +4,11 @@ server:
 spring:
   h2:
     console:
-      enable: true
+      enabled: true
 
   #DB
   datasource:
-    url: jdbc:h2:mem:customerDB;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:h2:mem:coachDB;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     driverClassName: org.h2.Driver
     platform: h2
     username: sa
@@ -22,15 +22,15 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     properties:
       hibernate:
-        show-sql: true
-        use_sql_console: false
+        show_sql: true
+        use_sql_comments: false
         format_sql: false
 
-  logging:
-    pattern:
-      console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
 
-  eureka:
-    client:
-      serviceUrl:
-        defaultZone: http://localhost:8099/eureka/
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8099/eureka/

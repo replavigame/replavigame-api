@@ -3,3 +3,5 @@
 *.json
 *.json
 *.json
+*.vscode
+*.idea
