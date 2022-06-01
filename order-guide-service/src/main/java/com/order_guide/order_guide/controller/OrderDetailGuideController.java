@@ -37,12 +37,6 @@ public class OrderDetailGuideController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/coach/{id}")
-    private ResponseEntity<OrderDetailGuideResponse> getAllByCoachId(@PathVariable("id") Long id) {
-        var response = orderDetailGuideService.getByCoachId(id);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
     @PostMapping
     private ResponseEntity<OrderDetailGuideResponse> create(@RequestBody OrderDetailRequest request) {
         var response = orderDetailGuideService.create(request);

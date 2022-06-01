@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class GuideDetailGuideRequest {
     private Long guideId;
-    private Long price;
+    private Long coachId;
 }

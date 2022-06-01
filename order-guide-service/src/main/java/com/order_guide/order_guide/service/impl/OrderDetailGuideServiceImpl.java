@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.order_guide.exception.ResourceNotFoundExceptionRequest;
+import com.order_guide.order_guide.client.CoachClient;
+import com.order_guide.order_guide.client.GuideClient;
+import com.order_guide.order_guide.client.UserClient;
 import com.order_guide.order_guide.dto.DetailResponse;
 import com.order_guide.order_guide.dto.OrderDetailGuideResponse;
 import com.order_guide.order_guide.dto.OrderDetailRequest;
@@ -18,6 +21,7 @@ import com.order_guide.order_guide.service.OrderDetailGuideService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class OrderDetailGuideServiceImpl implements OrderDetailGuideService {
@@ -28,11 +32,22 @@ public class OrderDetailGuideServiceImpl implements OrderDetailGuideService {
     @Autowired
     private OrderGuideRepository orderGuideRepository;
 
+    @Autowired
+    private GuideClient guideClient;
+
+    @Autowired
+    private UserClient userClient;
+
+    @Autowired
+    private CoachClient coachClient;
+
     private DetailResponse convertToResponse(OrderDetailGuide entity) {
         DetailResponse response = new DetailResponse();
         response.setGuideId(entity.getOrderDetailGuideId().getGuideId());
         response.setOrderId(entity.getOrderDetailGuideId().getOrderGuideId());
         response.setPrice(entity.getPrice());
+        response.setCoach(entity.getCoach());
+        response.setGuide(entity.getGuide());
 
         return response;
     }
@@ -42,11 +57,10 @@ public class OrderDetailGuideServiceImpl implements OrderDetailGuideService {
         OrderDetailGuideResponse response = new OrderDetailGuideResponse();
 
         response.setDetailResponses(detailResponses);
-        response.setCoachId(orderGuide.getCoachId());
         response.setCustomerId(orderGuide.getCustomerId());
         response.setSaleCreated(orderGuide.getSaleCreated());
-        response.setTotal(orderGuide.getTotalPrice());
         response.setQuantifyProducts(Long.valueOf(detailResponses.size()));
+        response.setUser(orderGuide.getUser());
 
         return response;
     }
@@ -76,31 +90,16 @@ public class OrderDetailGuideServiceImpl implements OrderDetailGuideService {
     }
 
     @Override
-    public OrderDetailGuideResponse getByCoachId(Long id) {
-        var entities = orderDetailGuideRepository.getAllByOrderCoachId(id);
-
-        if (entities.size() == 0) {
-            throw new ResourceNotFoundExceptionRequest("Order not found by customer id");
-        }
-
-        var detail = entities.stream().map(entity -> convertToResponse(entity)).collect(Collectors.toList());
-
-        var order = entities.get(0).getOrderGuide();
-
-        var response = convertToOrderDetailResponse(detail, order);
-
-        return response;
-    }
-
-    @Override
+    @Transactional
     public OrderDetailGuideResponse create(OrderDetailRequest request) {
 
         OrderGuide orderGuide = new OrderGuide();
 
-        orderGuide.setCoachId(request.getCoachId());
-        orderGuide.setCustomerId(request.getCustomerId());
+        orderGuide.setCustomerId(request.getUserId());
         orderGuide.setSaleCreated(new Date());
-        orderGuide.setTotalPrice(100L);
+
+        var user = userClient.getById(request.getUserId()).getBody();
+        orderGuide.setUser(user);
 
         try {
             orderGuideRepository.save(orderGuide);
@@ -115,6 +114,9 @@ public class OrderDetailGuideServiceImpl implements OrderDetailGuideService {
             OrderDetailGuide orderDetailGuide = new OrderDetailGuide();
             OrderDetailGuideId orderDetailGuideId = new OrderDetailGuideId();
 
+            var guide = guideClient.getById(detail.getGuideId()).getBody();
+            var coach = coachClient.updateWallet(detail.getCoachId(), guide.getPoints()).getBody();
+
             // Order de los id
             orderDetailGuideId.setGuideId(detail.getGuideId());
             orderDetailGuideId.setOrderGuideId(orderGuide.getId());
@@ -122,8 +124,10 @@ public class OrderDetailGuideServiceImpl implements OrderDetailGuideService {
             // Empezamos a crear nuestras ordenes que son elaborados en un carrito de
             // compras
             orderDetailGuide.setOrderDetailGuideId(orderDetailGuideId);
-            orderDetailGuide.setPrice(detail.getPrice());
+            orderDetailGuide.setPrice(guide.getPoints());
             orderDetailGuide.setOrderGuide(orderGuide);
+            orderDetailGuide.setGuide(guide);
+            orderDetailGuide.setCoach(coach);
 
             orderDetailGuideRepository.save(orderDetailGuide);
 

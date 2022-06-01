@@ -17,5 +17,7 @@ public interface CoachService {
 
     CoachResponse update(CoachRequest request, Long id);
 
+    CoachResponse updateWallet(Long id, Long point);
+
     void delete(Long id);
 }

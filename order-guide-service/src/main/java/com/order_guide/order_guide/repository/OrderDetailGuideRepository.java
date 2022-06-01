@@ -21,11 +21,6 @@ public interface OrderDetailGuideRepository extends JpaRepository<OrderDetailGui
     @Modifying
     List<OrderDetailGuide> getAllByOrderGuideId(@Param("orderId") Long orderId);
 
-    @Query("select o from OrderDetailGuide o where o.orderGuide.coachId = :coachId")
-    @Transactional
-    @Modifying
-    List<OrderDetailGuide> getAllByOrderCoachId(@Param("coachId") Long coachId);
-
     @Query("delete from OrderDetailGuide o where o.orderGuide.id = :orderId")
     @Transactional
     @Modifying

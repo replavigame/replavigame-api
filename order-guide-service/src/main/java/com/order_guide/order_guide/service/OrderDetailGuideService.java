@@ -11,8 +11,6 @@ public interface OrderDetailGuideService {
 
     OrderDetailGuideResponse getByOrderId(Long id);
 
-    OrderDetailGuideResponse getByCoachId(Long id);
-
     OrderDetailGuideResponse create(OrderDetailRequest request);
 
     void delete(Long id);

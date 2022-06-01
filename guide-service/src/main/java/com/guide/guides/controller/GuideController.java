@@ -2,6 +2,7 @@ package com.guide.guides.controller;
 
 import java.util.List;
 
+import com.guide.guides.dto.CoachGuideResponse;
 import com.guide.guides.dto.GuideRequest;
 import com.guide.guides.dto.GuideResponse;
 import com.guide.guides.service.GuideService;
@@ -31,9 +32,15 @@ public class GuideController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/category/{id}}")
+    @GetMapping("/category/{id}")
     private ResponseEntity<List<GuideResponse>> getAllByCategoryId(@PathVariable("id") Long id) {
         var response = guideService.getAllByCategoryId(id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/coach/{id}")
+    private ResponseEntity<CoachGuideResponse> getAllByCoachId(@PathVariable("id") Long id) {
+        var response = guideService.getAllByCoachId(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

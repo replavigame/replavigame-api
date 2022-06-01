@@ -4,11 +4,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.guide.exception.ResourceNotFoundExceptionRequest;
+import com.guide.guides.client.CoachClient;
 import com.guide.guides.dto.CategoryResponse;
 import com.guide.guides.dto.GuideRequest;
 import com.guide.guides.dto.GuideResponse;
+import com.guide.guides.dto.CoachGuideResponse;
 import com.guide.guides.entity.Category;
 import com.guide.guides.entity.Guide;
+import com.guide.guides.model.Coach;
 import com.guide.guides.repository.CategoryRepository;
 import com.guide.guides.repository.GuideRepository;
 import com.guide.guides.service.GuideService;
@@ -24,6 +27,9 @@ public class GuideServiceImpl implements GuideService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private CoachClient coachClient;
 
     private GuideResponse convertToResponse(Guide guide) {
         GuideResponse response = new GuideResponse();
@@ -86,6 +92,19 @@ public class GuideServiceImpl implements GuideService {
         var entities = guideRepository.findAllByCategoryId(id);
         var response = entities.stream().map(entity -> convertToResponse(entity))
                 .collect(Collectors.toList());
+        return response;
+    }
+
+    @Override
+    public CoachGuideResponse getAllByCoachId(Long id) {
+        var entities = guideRepository.findAllByCoachId(id);
+        var guides = entities.stream().map(entity -> convertToResponse(entity))
+                .collect(Collectors.toList());
+
+        Coach coach = coachClient.geById(id).getBody();
+        CoachGuideResponse response = new CoachGuideResponse();
+        response.setCoach(coach);
+        response.setGuides(guides);
         return response;
     }
 

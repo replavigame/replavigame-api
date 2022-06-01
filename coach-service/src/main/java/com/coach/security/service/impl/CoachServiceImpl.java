@@ -173,4 +173,20 @@ public class CoachServiceImpl implements CoachService {
         }
     }
 
+    @Override
+    public CoachResponse updateWallet(Long id, Long point) {
+        var entity = coachRepository.getCoachById(id)
+                .orElseThrow(() -> new ResourceNotFoundExceptionRequest("User not found by id"));
+
+        entity.setPoints(entity.getPoints() + point);
+
+        try {
+            coachRepository.save(entity);
+            var response = mapper.map(entity, CoachResponse.class);
+            return response;
+        } catch (Exception e) {
+            throw new ResourceNotFoundExceptionRequest("Error ocurred while updating wallet of coach");
+        }
+    }
+
 }

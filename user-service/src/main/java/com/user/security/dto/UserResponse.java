@@ -2,7 +2,6 @@ package com.user.security.dto;
 
 import java.util.Date;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
@@ -23,7 +22,6 @@ public class UserResponse {
 
     private String lastName;
 
-    @Schema(description = "Email address of the contact.", example = "jessica@ngilang.com", required = false)
     private Date createdDate;
 
     private Date birthday;
