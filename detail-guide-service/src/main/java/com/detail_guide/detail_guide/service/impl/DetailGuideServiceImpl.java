@@ -13,7 +13,7 @@ import com.detail_guide.exception.ResourceNotFoundExceptionRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import lombok.var;
+//import lombok.var;
 
 @Service
 public class DetailGuideServiceImpl implements DetailGuideService {

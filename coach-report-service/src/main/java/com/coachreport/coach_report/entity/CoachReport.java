@@ -1,6 +1,7 @@
 package com.coachreport.coach_report.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,12 +24,19 @@ public class CoachReport {
     private Long id;
 
     private String observation;
+    @Temporal(TemporalType.DATE)
     @JsonFormat(pattern = "yyyy/MM/dd HH:mm")
-    @Column(name = "received_date")
-    private Date receivedDate;
+    @Column(name = "received_at")
+    private Date receivedAt;
     @JsonFormat(pattern = "yyyy/MM/dd HH:mm")
-    @Column(name = "qualified_date")
-    private Date qualifiedDate;
+    @Column(name = "qualified_at")
+    private Date qualifiedAt;
     private Boolean approved;
+
+
+    @PrePersist
+    public void prePersist() {
+        this.receivedAt = new Date();
+    }
 
 }

@@ -3,7 +3,9 @@ package com.coachreport.coach_report.service.impl;
 import com.coachreport.coach_report.dto.CoachDocumentResponse;
 import com.coachreport.coach_report.dto.CoachReportRequest;
 import com.coachreport.coach_report.dto.CoachReportResponse;
+import com.coachreport.coach_report.entity.CoachDocument;
 import com.coachreport.coach_report.entity.CoachReport;
+import com.coachreport.coach_report.repository.CoachDocumentRepository;
 import com.coachreport.coach_report.repository.CoachReportRepository;
 import com.coachreport.coach_report.service.CoachReportService;
 import com.coachreport.exception.ResourceNotFoundExceptionRequest;
@@ -19,13 +21,16 @@ public class CoachReportServiceImpl implements CoachReportService {
     @Autowired
     private CoachReportRepository coachReportRepository;
 
+    @Autowired
+    private CoachDocumentRepository coachDocumentRepository;
+
     private CoachReportResponse convertToResponse(CoachReport entity) {
         CoachReportResponse response = new CoachReportResponse();
         response.setId(entity.getId());
         response.setApproved(entity.getApproved());
         response.setObservation(entity.getObservation());
-        response.setQualifiedDate(entity.getQualifiedDate());
-        response.setReceivedDate(entity.getQualifiedDate());
+        response.setQualifiedAt(entity.getQualifiedAt());
+        response.setReceivedAt(entity.getReceivedAt());
         return response;
     }
 
@@ -33,21 +38,37 @@ public class CoachReportServiceImpl implements CoachReportService {
         CoachReport coachReport = new CoachReport();
         coachReport.setApproved(request.getApproved());
         coachReport.setObservation(request.getObservation());
-        coachReport.setQualifiedDate(request.getQualifiedDate());
-        coachReport.setReceivedDate(request.getReceivedDate());
+        coachReport.setQualifiedAt(request.getQualifiedAt());
         return coachReport;
+    }
+
+    private CoachDocumentResponse convertCoachDocumentToResponse(CoachDocument entity) {
+        CoachDocumentResponse response = new CoachDocumentResponse();
+        response.setId(entity.getId());
+        response.setDocumentUrl(entity.getDocumentUrl());
+        response.setTitle(entity.getTitle());
+        response.setComment(entity.getComment());
+        response.setCoachreport_id(entity.getCoachReport().getId());
+        return response;
     }
 
 
     @Override
     public List<CoachReportResponse> getAll() {
         var entities = coachReportRepository.findAll();
-        return entities.stream().map(this::convertToResponse)
+        var responses = entities.stream().map(this::convertToResponse)
                 .collect(Collectors.toList());
+        responses.forEach(coachReportResponse -> {
+            var entitiesCD = coachDocumentRepository.findAllByCoachReportId(coachReportResponse.getId());
+            var responsesCD = entitiesCD.stream().map(this::convertCoachDocumentToResponse).collect(Collectors.toList());
+            coachReportResponse.setCoachDocuments(responsesCD);
+        });
+
+        return responses;
     }
 
     @Override
-    public List<CoachReportResponse> getAllCoachReportsByRangeOfReceivedDate() {
+    public List<CoachReportResponse> getAllCoachReportsByRangeOfReceivedAt() {
         return null;
     }
 
@@ -55,7 +76,13 @@ public class CoachReportServiceImpl implements CoachReportService {
     public CoachReportResponse getById(Long id) {
         var entity = coachReportRepository.getCoachReportById(id)
                 .orElseThrow(() -> new ResourceNotFoundExceptionRequest("CoachReport not found"));
-        return convertToResponse(entity);
+        var response = convertToResponse(entity);
+
+        var entitiesCD = coachDocumentRepository.findAllByCoachReportId(response.getId());
+        var responsesCD = entitiesCD.stream().map(this::convertCoachDocumentToResponse).collect(Collectors.toList());
+        response.setCoachDocuments(responsesCD);
+
+        return response;
     }
 
     @Override
@@ -92,7 +119,7 @@ public class CoachReportServiceImpl implements CoachReportService {
                 .orElseThrow(() -> new ResourceNotFoundExceptionRequest("CoachReport not found"));
 
         try {
-            coachReportRepository.deleteById(id);
+            coachReportRepository.deleteById(entity.getId());
         } catch (Exception e) {
             throw new ResourceNotFoundExceptionRequest("Error occurred while deleting CoachReport");
         }

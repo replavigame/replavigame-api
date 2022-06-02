@@ -9,8 +9,6 @@ import java.util.Date;
 public class CoachReportRequest {
     private String observation;
     @JsonFormat(pattern = "yyyy/MM/dd HH:mm", shape = JsonFormat.Shape.STRING)
-    private Date receivedDate;
-    @JsonFormat(pattern = "yyyy/MM/dd HH:mm", shape = JsonFormat.Shape.STRING)
-    private Date qualifiedDate;
+    private Date qualifiedAt;
     private Boolean approved;
 }

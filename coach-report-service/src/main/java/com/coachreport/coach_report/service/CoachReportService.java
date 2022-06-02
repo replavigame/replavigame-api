@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface CoachReportService {
     List<CoachReportResponse> getAll();
-    List<CoachReportResponse> getAllCoachReportsByRangeOfReceivedDate();
+    List<CoachReportResponse> getAllCoachReportsByRangeOfReceivedAt();
     CoachReportResponse getById(Long id);
     CoachReportResponse create(CoachReportRequest coachReportRequest);
     CoachReportResponse update(CoachReportRequest coachReportRequest, Long id);
