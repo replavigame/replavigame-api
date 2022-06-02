@@ -36,15 +36,15 @@ eureka:
       defaultZone: http://localhost:8099/eureka/
 
 Feign:
-  hystrix:
+  circuitbreaker:
     enabled: true
 
 hystrix:
   dashboard:
-    proxy-stream-allow-list: "*"
+    proxy-stream-allow-list: '*'
 
 management:
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: '*'
