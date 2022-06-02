@@ -40,7 +40,7 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.modelmapper/modelmapper
 	implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.1.0'
 	// https://mvnrepository.com/artifact/io.springfox/springfox-boot-starter
-	//implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
+	//implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
 	implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.9'
 
 	compileOnly 'org.projectlombok:lombok'

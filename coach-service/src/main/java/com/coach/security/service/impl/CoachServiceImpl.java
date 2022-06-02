@@ -76,7 +76,7 @@ public class CoachServiceImpl implements CoachService {
         var nameCoach = coachRepository.getCoachByNameCoach(request.getNameCoach())
                 .orElse(null);
         if (nameCoach != null) {
-            throw new ResourceNotFoundExceptionRequest("Name coach not valid");
+            throw new ResourceNotFoundExceptionRequest("Name coachResponse not valid");
         }
 
         var entity = new Coach();
@@ -99,7 +99,7 @@ public class CoachServiceImpl implements CoachService {
             var response = mapper.map(entity, CoachResponse.class);
             return response;
         } catch (Exception e) {
-            throw new ResourceNotFoundExceptionRequest("Error ocurred while creating coach");
+            throw new ResourceNotFoundExceptionRequest("Error ocurred while creating coachResponse");
         }
     }
 
@@ -137,7 +137,7 @@ public class CoachServiceImpl implements CoachService {
             var nameCoach = coachRepository.getCoachByNameCoach(request.getNameCoach())
                     .orElse(null);
             if (nameCoach != null) {
-                throw new ResourceNotFoundExceptionRequest("Name coach not valid");
+                throw new ResourceNotFoundExceptionRequest("Name coachResponse not valid");
             }
         }
 
@@ -160,7 +160,7 @@ public class CoachServiceImpl implements CoachService {
             var response = mapper.map(entity, CoachResponse.class);
             return response;
         } catch (Exception e) {
-            throw new ResourceNotFoundExceptionRequest("Error ocurred while updating coach");
+            throw new ResourceNotFoundExceptionRequest("Error ocurred while updating coachResponse");
         }
     }
 
@@ -169,7 +169,7 @@ public class CoachServiceImpl implements CoachService {
         try {
             coachRepository.deleteById(id);
         } catch (Exception e) {
-            throw new ResourceNotFoundExceptionRequest("Error ocurred while deleting coach");
+            throw new ResourceNotFoundExceptionRequest("Error ocurred while deleting coachResponse");
         }
     }
 

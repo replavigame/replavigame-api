@@ -11,12 +11,15 @@ import com.coachreport.coach_report.repository.CoachDocumentRepository;
 import com.coachreport.coach_report.repository.CoachReportRepository;
 import com.coachreport.coach_report.service.CoachReportService;
 import com.coachreport.exception.ResourceNotFoundExceptionRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class CoachReportServiceImpl implements CoachReportService {
 
@@ -26,6 +29,7 @@ public class CoachReportServiceImpl implements CoachReportService {
     @Autowired
     private CoachDocumentRepository coachDocumentRepository;
 
+    @Qualifier("com.coachreport.coach_report.client.CoachClient")
     @Autowired
     private CoachClient coachClient;
 
@@ -84,8 +88,8 @@ public class CoachReportServiceImpl implements CoachReportService {
         var entity = coachReportRepository.getCoachReportById(id)
                 .orElseThrow(() -> new ResourceNotFoundExceptionRequest("CoachReport not found"));
 
-        Coach coach = coachClient.geById(entity.getCoachId()).getBody();
-        entity.setCoach(coach);
+        Coach coachResponse = coachClient.geById(entity.getCoachId()).getBody();
+        entity.setCoach(coachResponse);
         var response = convertToResponse(entity);
 
         var entitiesCD = coachDocumentRepository.findAllByCoachReportId(response.getId());
@@ -102,8 +106,8 @@ public class CoachReportServiceImpl implements CoachReportService {
 
         try {
             coachReportRepository.save(entity);
-            Coach coach = coachClient.geById(entity.getCoachId()).getBody();
-            entity.setCoach(coach);
+            Coach coachResponse = coachClient.geById(entity.getCoachId()).getBody();
+            entity.setCoach(coachResponse);
             return convertToResponse(entity);
         } catch (Exception e) {
             throw new ResourceNotFoundExceptionRequest("Error occurred while creating CoachReport");
@@ -117,8 +121,8 @@ public class CoachReportServiceImpl implements CoachReportService {
 
         entity = convertToEntity(coachReportRequest);
         entity.setId(id);
-        Coach coach = coachClient.geById(entity.getCoachId()).getBody();
-        entity.setCoach(coach);
+        Coach coachResponse = coachClient.geById(entity.getCoachId()).getBody();
+        entity.setCoach(coachResponse);
 
         try {
             coachReportRepository.save(entity);

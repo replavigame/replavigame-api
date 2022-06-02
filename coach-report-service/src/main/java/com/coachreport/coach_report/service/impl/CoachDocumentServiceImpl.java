@@ -7,12 +7,14 @@ import com.coachreport.coach_report.repository.CoachDocumentRepository;
 import com.coachreport.coach_report.repository.CoachReportRepository;
 import com.coachreport.coach_report.service.CoachDocumentService;
 import com.coachreport.exception.ResourceNotFoundExceptionRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class CoachDocumentServiceImpl implements CoachDocumentService {
 

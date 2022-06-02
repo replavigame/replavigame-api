@@ -2,7 +2,6 @@ package com.coachreport.coach_report.entity;
 
 import com.coachreport.coach_report.models.Coach;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,9 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 import javax.persistence.Entity;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name="tb_coach_reports")
