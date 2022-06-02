@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
-@FeignClient(name = "coach-service",path = "/coachs")
+@FeignClient(name = "coach-service",fallback = CoachHystrixFallbackFactory.class)
 public interface CoachClient {
 
-    @GetMapping("/{id}")
+    @GetMapping("/coachs/{id}")
     public ResponseEntity<Coach> geById(@PathVariable("id") Long id);
 }
