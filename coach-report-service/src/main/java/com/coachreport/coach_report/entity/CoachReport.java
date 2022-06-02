@@ -1,5 +1,6 @@
 package com.coachreport.coach_report.entity;
 
+import com.coachreport.coach_report.models.Coach;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,12 @@ public class CoachReport {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "coach_id")
+    private Long coachId;
+
+    @Transient
+    private Coach coach;
 
     private String observation;
     @Temporal(TemporalType.DATE)

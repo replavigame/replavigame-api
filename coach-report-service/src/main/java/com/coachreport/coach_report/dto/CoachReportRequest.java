@@ -11,4 +11,5 @@ public class CoachReportRequest {
     @JsonFormat(pattern = "yyyy/MM/dd HH:mm", shape = JsonFormat.Shape.STRING)
     private Date qualifiedAt;
     private Boolean approved;
+    private Long coachId;
 }

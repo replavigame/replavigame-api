@@ -1,10 +1,12 @@
 package com.coachreport.coach_report.service.impl;
 
+import com.coachreport.coach_report.client.CoachClient;
 import com.coachreport.coach_report.dto.CoachDocumentResponse;
 import com.coachreport.coach_report.dto.CoachReportRequest;
 import com.coachreport.coach_report.dto.CoachReportResponse;
 import com.coachreport.coach_report.entity.CoachDocument;
 import com.coachreport.coach_report.entity.CoachReport;
+import com.coachreport.coach_report.models.Coach;
 import com.coachreport.coach_report.repository.CoachDocumentRepository;
 import com.coachreport.coach_report.repository.CoachReportRepository;
 import com.coachreport.coach_report.service.CoachReportService;
@@ -24,6 +26,9 @@ public class CoachReportServiceImpl implements CoachReportService {
     @Autowired
     private CoachDocumentRepository coachDocumentRepository;
 
+    @Autowired
+    private CoachClient coachClient;
+
     private CoachReportResponse convertToResponse(CoachReport entity) {
         CoachReportResponse response = new CoachReportResponse();
         response.setId(entity.getId());
@@ -31,6 +36,7 @@ public class CoachReportServiceImpl implements CoachReportService {
         response.setObservation(entity.getObservation());
         response.setQualifiedAt(entity.getQualifiedAt());
         response.setReceivedAt(entity.getReceivedAt());
+        response.setCoach(entity.getCoach());
         return response;
     }
 
@@ -39,6 +45,7 @@ public class CoachReportServiceImpl implements CoachReportService {
         coachReport.setApproved(request.getApproved());
         coachReport.setObservation(request.getObservation());
         coachReport.setQualifiedAt(request.getQualifiedAt());
+        coachReport.setCoachId(request.getCoachId());
         return coachReport;
     }
 
@@ -48,7 +55,7 @@ public class CoachReportServiceImpl implements CoachReportService {
         response.setDocumentUrl(entity.getDocumentUrl());
         response.setTitle(entity.getTitle());
         response.setComment(entity.getComment());
-        response.setCoachreport_id(entity.getCoachReport().getId());
+        response.setCoachreportId(entity.getCoachReport().getId());
         return response;
     }
 
@@ -76,11 +83,15 @@ public class CoachReportServiceImpl implements CoachReportService {
     public CoachReportResponse getById(Long id) {
         var entity = coachReportRepository.getCoachReportById(id)
                 .orElseThrow(() -> new ResourceNotFoundExceptionRequest("CoachReport not found"));
+
+        Coach coach = coachClient.geById(entity.getCoachId()).getBody();
+        entity.setCoach(coach);
         var response = convertToResponse(entity);
 
         var entitiesCD = coachDocumentRepository.findAllByCoachReportId(response.getId());
         var responsesCD = entitiesCD.stream().map(this::convertCoachDocumentToResponse).collect(Collectors.toList());
         response.setCoachDocuments(responsesCD);
+
 
         return response;
     }
@@ -91,6 +102,8 @@ public class CoachReportServiceImpl implements CoachReportService {
 
         try {
             coachReportRepository.save(entity);
+            Coach coach = coachClient.geById(entity.getCoachId()).getBody();
+            entity.setCoach(coach);
             return convertToResponse(entity);
         } catch (Exception e) {
             throw new ResourceNotFoundExceptionRequest("Error occurred while creating CoachReport");
@@ -104,6 +117,8 @@ public class CoachReportServiceImpl implements CoachReportService {
 
         entity = convertToEntity(coachReportRequest);
         entity.setId(id);
+        Coach coach = coachClient.geById(entity.getCoachId()).getBody();
+        entity.setCoach(coach);
 
         try {
             coachReportRepository.save(entity);

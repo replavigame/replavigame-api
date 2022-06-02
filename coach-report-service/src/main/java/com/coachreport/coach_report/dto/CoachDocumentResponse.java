@@ -8,5 +8,5 @@ public class CoachDocumentResponse {
     private String title;
     private String documentUrl;
     private String comment;
-    private Long coachreport_id;
+    private Long coachreportId;
 }

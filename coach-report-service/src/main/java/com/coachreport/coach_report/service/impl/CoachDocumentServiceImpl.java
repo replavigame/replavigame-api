@@ -28,7 +28,7 @@ public class CoachDocumentServiceImpl implements CoachDocumentService {
         response.setDocumentUrl(entity.getDocumentUrl());
         response.setTitle(entity.getTitle());
         response.setComment(entity.getComment());
-        response.setCoachreport_id(entity.getCoachReport().getId());
+        response.setCoachreportId(entity.getCoachReport().getId());
         return response;
     }
 
