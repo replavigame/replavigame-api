@@ -11,6 +11,7 @@ import com.coachingsession.coaching_session.repository.SessionRepository;
 import com.coachingsession.coaching_session.service.SessionService;
 import com.coachingsession.exception.ResourceNotFoundExceptionRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -22,9 +23,11 @@ public class SessionServiceImpl implements SessionService {
     @Autowired
     private SessionRepository repository;
 
+    @Qualifier("com.coachingsession.coaching_session.client.CoachClient")
     @Autowired
     private CoachClient coachClient;
 
+    @Qualifier("com.coachingsession.coaching_session.client.UserClient")
     @Autowired
     private UserClient userClient;
 
