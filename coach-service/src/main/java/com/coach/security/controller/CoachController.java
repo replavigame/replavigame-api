@@ -5,6 +5,7 @@ import java.util.List;
 import com.coach.security.dto.AuthenticateRequest;
 import com.coach.security.dto.CoachRequest;
 import com.coach.security.dto.CoachResponse;
+import com.coach.security.dto.CoachResponseSimple;
 import com.coach.security.service.CoachService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,12 @@ public class CoachController {
     @GetMapping
     private ResponseEntity<List<CoachResponse>> getAll() {
         var response = coachService.getAll();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/game/{id}")
+    private ResponseEntity<List<CoachResponseSimple>> getAllByGameId(@PathVariable("id") Long id) {
+        var response = coachService.getAllByGameId(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

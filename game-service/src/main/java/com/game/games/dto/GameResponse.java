@@ -15,4 +15,6 @@ public class GameResponse {
     private String description;
 
     private String image;
+
+    private String background;
 }

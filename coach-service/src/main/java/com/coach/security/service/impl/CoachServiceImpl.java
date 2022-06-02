@@ -7,6 +7,7 @@ import com.coach.exception.ResourceNotFoundExceptionRequest;
 import com.coach.security.dto.AuthenticateRequest;
 import com.coach.security.dto.CoachRequest;
 import com.coach.security.dto.CoachResponse;
+import com.coach.security.dto.CoachResponseSimple;
 import com.coach.security.entity.Coach;
 import com.coach.security.repository.CoachRepository;
 import com.coach.security.service.CoachService;
@@ -37,9 +38,18 @@ public class CoachServiceImpl implements CoachService {
     }
 
     @Override
+    public List<CoachResponseSimple> getAllByGameId(Long id) {
+        var entities = coachRepository.findAllByGameId(id);
+        var response = entities.stream().map(entity -> mapper.map(entity, CoachResponseSimple.class))
+                .collect(Collectors.toList());
+        return response;
+    }
+
+    @Override
     public CoachResponse getById(Long id) {
         var entity = coachRepository.getCoachById(id)
                 .orElseThrow(() -> new ResourceNotFoundExceptionRequest("User not found by id"));
+
         var response = mapper.map(entity, CoachResponse.class);
         return response;
     }

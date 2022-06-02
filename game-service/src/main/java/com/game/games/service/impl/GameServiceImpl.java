@@ -27,6 +27,7 @@ public class GameServiceImpl implements GameService {
         response.setImage(game.getImage());
         response.setName(game.getName());
         response.setSubtitle(game.getSubtitle());
+        response.setBackground(game.getBackground());
 
         return response;
     }
@@ -38,6 +39,7 @@ public class GameServiceImpl implements GameService {
         game.setImage(request.getImage());
         game.setName(request.getName());
         game.setSubtitle(request.getSubtitle());
+        game.setBackground(request.getBackground());
 
         return game;
     }
@@ -50,6 +52,7 @@ public class GameServiceImpl implements GameService {
         game.setName(request.getName());
         game.setId(id);
         game.setSubtitle(request.getSubtitle());
+        game.setBackground(request.getBackground());
 
         return game;
     }

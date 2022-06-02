@@ -33,4 +33,7 @@ public class Game {
 
     @Lob
     private String image;
+
+    @Lob
+    private String background;
 }

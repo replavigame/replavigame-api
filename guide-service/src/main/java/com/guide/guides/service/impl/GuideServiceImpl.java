@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import com.guide.exception.ResourceNotFoundExceptionRequest;
 import com.guide.guides.client.CoachClient;
+import com.guide.guides.client.GameClient;
 import com.guide.guides.dto.CategoryResponse;
 import com.guide.guides.dto.GuideRequest;
 import com.guide.guides.dto.GuideResponse;
@@ -31,6 +32,9 @@ public class GuideServiceImpl implements GuideService {
     @Autowired
     private CoachClient coachClient;
 
+    @Autowired
+    private GameClient gameClient;
+
     private GuideResponse convertToResponse(Guide guide) {
         GuideResponse response = new GuideResponse();
         CategoryResponse category = new CategoryResponse();
@@ -46,7 +50,6 @@ public class GuideServiceImpl implements GuideService {
         response.setId(guide.getId());
         response.setPoints(guide.getPoints());
         response.setTitle(guide.getTitle());
-
         return response;
     }
 
@@ -113,6 +116,11 @@ public class GuideServiceImpl implements GuideService {
         var entity = guideRepository.getGuideById(id)
                 .orElseThrow(() -> new ResourceNotFoundExceptionRequest("Guide not found"));
         var response = convertToResponse(entity);
+
+        var game = gameClient.getById(entity.getGameId()).getBody();
+
+        response.setGame(game);
+
         return response;
     }
 
@@ -121,11 +129,14 @@ public class GuideServiceImpl implements GuideService {
         var category = categoryRepository.getCategoryById(request.getCategoryId())
                 .orElseThrow(() -> new ResourceNotFoundExceptionRequest("Category not found"));
 
+        var game = gameClient.getById(request.getGameId()).getBody();
+
         var entity = convertToEntity(request, category);
 
         try {
             guideRepository.save(entity);
             var response = convertToResponse(entity);
+            response.setGame(game);
             return response;
         } catch (Exception e) {
             throw new ResourceNotFoundExceptionRequest("Error ocurred while creating guide");
@@ -141,9 +152,12 @@ public class GuideServiceImpl implements GuideService {
 
         entity = convertToEntity(request, category, id);
 
+        var game = gameClient.getById(request.getGameId()).getBody();
+
         try {
             guideRepository.save(entity);
             var response = convertToResponse(entity);
+            response.setGame(game);
             return response;
         } catch (Exception e) {
             throw new ResourceNotFoundExceptionRequest("Error ocurred while updating guide");

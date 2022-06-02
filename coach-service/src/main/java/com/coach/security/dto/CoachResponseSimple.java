@@ -7,24 +7,14 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 @Data
-public class CoachResponse {
-    private Long id;
-
-    private Long points;
-
-    private String username;
-
+public class CoachResponseSimple {
     private String nameCoach;
 
     private String description;
 
-    private String password;
-
     private String email;
 
     private String name;
-
-    private String number;
 
     private String lastName;
 
@@ -33,6 +23,4 @@ public class CoachResponse {
 
     @JsonFormat(pattern = "yyyy/MM/dd")
     private Date birthday;
-
-    private Long gameId;
 }

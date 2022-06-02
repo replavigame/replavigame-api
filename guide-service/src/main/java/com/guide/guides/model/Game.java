@@ -1,9 +1,11 @@
-package com.game.games.dto;
+package com.guide.guides.model;
 
 import lombok.Data;
 
 @Data
-public class GameRequest {
+public class Game {
+    private Long id;
+
     private String name;
 
     private String subtitle;
@@ -13,6 +15,4 @@ public class GameRequest {
     private String description;
 
     private String image;
-
-    private String background;
 }
