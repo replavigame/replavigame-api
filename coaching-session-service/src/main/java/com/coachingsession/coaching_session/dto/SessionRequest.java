@@ -13,4 +13,6 @@ public class SessionRequest {
     @JsonFormat(pattern = "yyyy/MM/dd HH:mm", shape = JsonFormat.Shape.STRING)
     private Date endDate;
     private Boolean available;
+    private Long coachId;
+    private Long userId;
 }

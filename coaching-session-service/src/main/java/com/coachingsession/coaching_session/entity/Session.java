@@ -1,5 +1,7 @@
 package com.coachingsession.coaching_session.entity;
 
+import com.coachingsession.coaching_session.models.Coach;
+import com.coachingsession.coaching_session.models.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,6 +27,18 @@ public class Session {
     @Column(name = "end_date")
     private Date endDate;
     private Boolean available;
+
+    @Column(name = "coach_id")
+    private Long coachId;
+
+    @Transient
+    private Coach coach;
+
+    @Column(name = "user_id")
+    private Long userId;
+
+    @Transient
+    private User user;
 
 
 }
