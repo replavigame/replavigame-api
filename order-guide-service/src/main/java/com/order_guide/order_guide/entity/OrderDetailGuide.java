@@ -8,6 +8,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.order_guide.order_guide.model.Coach;
+import com.order_guide.order_guide.model.Guide;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,4 +34,13 @@ public class OrderDetailGuide {
 
     @Column(name = "price")
     private Long price;
+
+    @Column(name = "coach_id")
+    private Long coachId;
+
+    @Transient
+    private Coach coach;
+
+    @Transient
+    private Guide guide;
 }

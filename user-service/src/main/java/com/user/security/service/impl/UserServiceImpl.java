@@ -146,4 +146,19 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public UserResponse updateWallet(Long points, Long id) {
+        var entity = userRepository.getUserById(id)
+                .orElseThrow(() -> new ResourceNotFoundExceptionRequest("User not found by id"));
+
+        entity.setPoints(entity.getPoints() - points);
+        try {
+            userRepository.save(entity);
+            var response = mapper.map(entity, UserResponse.class);
+            return response;
+        } catch (Exception e) {
+            throw new ResourceNotFoundExceptionRequest("Error ocurred while updating wallet user");
+        }
+    }
+
 }

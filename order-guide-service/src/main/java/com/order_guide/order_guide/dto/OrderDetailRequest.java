@@ -6,7 +6,6 @@ import lombok.Data;
 
 @Data
 public class OrderDetailRequest {
-    private Long customerId;
-    private Long coachId;
+    private Long userId;
     private List<GuideDetailGuideRequest> detail;
 }

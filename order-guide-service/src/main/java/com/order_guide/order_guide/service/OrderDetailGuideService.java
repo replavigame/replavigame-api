@@ -2,6 +2,7 @@ package com.order_guide.order_guide.service;
 
 import java.util.List;
 
+import com.order_guide.order_guide.dto.CoachOrderDetailResponse;
 import com.order_guide.order_guide.dto.DetailResponse;
 import com.order_guide.order_guide.dto.OrderDetailGuideResponse;
 import com.order_guide.order_guide.dto.OrderDetailRequest;
@@ -11,7 +12,7 @@ public interface OrderDetailGuideService {
 
     OrderDetailGuideResponse getByOrderId(Long id);
 
-    OrderDetailGuideResponse getByCoachId(Long id);
+    CoachOrderDetailResponse getAllByCoachId(Long id);
 
     OrderDetailGuideResponse create(OrderDetailRequest request);
 
