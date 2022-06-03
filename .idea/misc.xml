@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/coach-service" />
+    <file type="web" url="file://$PROJECT_DIR$/coaching-session-service" />
+    <file type="web" url="file://$PROJECT_DIR$/config-service" />
+    <file type="web" url="file://$PROJECT_DIR$/detail-guide-service" />
+    <file type="web" url="file://$PROJECT_DIR$/game-coin-service" />
+    <file type="web" url="file://$PROJECT_DIR$/guide-service" />
+    <file type="web" url="file://$PROJECT_DIR$/order-game-coin-service" />
+    <file type="web" url="file://$PROJECT_DIR$/order-guide-service" />
+    <file type="web" url="file://$PROJECT_DIR$/registry-service" />
+    <file type="web" url="file://$PROJECT_DIR$/user-service" />
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_16" project-jdk-name="17" project-jdk-type="JavaSDK" />
+  <component name="ProjectType">
+    <option name="id" value="jpab" />
+  </component>
+</project>
