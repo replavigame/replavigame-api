@@ -45,6 +45,7 @@ public class User {
     private Date createdDate;
 
     @Column(name = "birthday")
+    @JsonFormat(pattern = "yyyy/MM/dd")
     private Date birthday;
 
     @Column(name = "game_favorite_1")
