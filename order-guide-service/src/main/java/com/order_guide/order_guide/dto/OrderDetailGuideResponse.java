@@ -17,4 +17,5 @@ public class OrderDetailGuideResponse {
     private Date saleCreated;
     private Long quantifyProducts;
     private User user;
+    private Long total;
 }

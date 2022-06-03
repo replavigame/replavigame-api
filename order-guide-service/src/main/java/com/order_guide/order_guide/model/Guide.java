@@ -19,4 +19,6 @@ public class Guide {
     private Long points;
 
     private Double descount;
+
+    private Coach coach;
 }

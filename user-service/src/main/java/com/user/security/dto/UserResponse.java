@@ -2,6 +2,8 @@ package com.user.security.dto;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Data;
 
 @Data
@@ -22,8 +24,10 @@ public class UserResponse {
 
     private String lastName;
 
+    @JsonFormat(pattern = "yyyy/MM/dd")
     private Date createdDate;
 
+    @JsonFormat(pattern = "yyyy/MM/dd")
     private Date birthday;
 
     private Long gameFavorite1;

@@ -2,19 +2,24 @@ package com.order_guide.order_guide.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import com.order_guide.exception.ResourceNotFoundExceptionRequest;
 import com.order_guide.order_guide.client.CoachClient;
 import com.order_guide.order_guide.client.GuideClient;
 import com.order_guide.order_guide.client.UserClient;
+import com.order_guide.order_guide.dto.CoachGuideDetail;
+import com.order_guide.order_guide.dto.CoachOrderDetailResponse;
 import com.order_guide.order_guide.dto.DetailResponse;
 import com.order_guide.order_guide.dto.OrderDetailGuideResponse;
 import com.order_guide.order_guide.dto.OrderDetailRequest;
 import com.order_guide.order_guide.entity.OrderDetailGuide;
 import com.order_guide.order_guide.entity.OrderDetailGuideId;
 import com.order_guide.order_guide.entity.OrderGuide;
+import com.order_guide.order_guide.model.Coach;
 import com.order_guide.order_guide.repository.OrderDetailGuideRepository;
 import com.order_guide.order_guide.repository.OrderGuideRepository;
 import com.order_guide.order_guide.service.OrderDetailGuideService;
@@ -84,7 +89,11 @@ public class OrderDetailGuideServiceImpl implements OrderDetailGuideService {
 
         var order = entities.get(0).getOrderGuide();
 
+        var user = userClient.getById(order.getCustomerId()).getBody();
+
         var response = convertToOrderDetailResponse(detail, order);
+
+        response.setUser(user);
 
         return response;
     }
@@ -99,6 +108,11 @@ public class OrderDetailGuideServiceImpl implements OrderDetailGuideService {
         orderGuide.setSaleCreated(new Date());
 
         var user = userClient.getById(request.getUserId()).getBody();
+
+        if(user.getId() == null){
+            throw new ResourceNotFoundExceptionRequest("Error user microservice");
+        }
+
         orderGuide.setUser(user);
 
         try {
@@ -110,12 +124,18 @@ public class OrderDetailGuideServiceImpl implements OrderDetailGuideService {
         orderGuideRepository.save(orderGuide);
         List<OrderDetailGuide> entities = new ArrayList<OrderDetailGuide>();
 
+        List<Long> prices = new ArrayList<Long>();
+
         request.getDetail().forEach(detail -> {
             OrderDetailGuide orderDetailGuide = new OrderDetailGuide();
             OrderDetailGuideId orderDetailGuideId = new OrderDetailGuideId();
 
             var guide = guideClient.getById(detail.getGuideId()).getBody();
-            var coach = coachClient.updateWallet(detail.getCoachId(), guide.getPoints()).getBody();
+            var coach = coachClient.updateWallet(guide.getCoachId(), guide.getPoints()*-1).getBody();
+
+            if(coach.getId() == null){
+                throw new ResourceNotFoundExceptionRequest("Error coach microservice");
+            }
 
             // Order de los id
             orderDetailGuideId.setGuideId(detail.getGuideId());
@@ -133,11 +153,23 @@ public class OrderDetailGuideServiceImpl implements OrderDetailGuideService {
 
             // Guardamos todas las compras para pasarlo luego en un response
             entities.add(orderDetailGuide);
+            prices.add(guide.getPoints());
         });
+
+        var total = prices.stream().mapToLong(Long::longValue).sum();
+
+        user = userClient.updateWallet(total, user.getId()).getBody();
+
+        if(user.getId() == null){
+            throw new ResourceNotFoundExceptionRequest("Error user microservice");
+        }
 
         var detail = entities.stream().map(entity -> convertToResponse(entity)).collect(Collectors.toList());
 
         var response = convertToOrderDetailResponse(detail, orderGuide);
+
+        response.setTotal(total);
+        response.setUser(user);
 
         return response;
     }
@@ -154,6 +186,59 @@ public class OrderDetailGuideServiceImpl implements OrderDetailGuideService {
         } catch (Exception e) {
             throw new ResourceNotFoundExceptionRequest("Error ocurred while deleting order guide");
         }
+    }
+
+    @Override
+    public CoachOrderDetailResponse getAllByCoachId(Long id) {
+        
+        var orders = orderDetailGuideRepository.getAllByCoachId(id);
+
+        CoachOrderDetailResponse response = new CoachOrderDetailResponse();
+
+        Coach coach = coachClient.geById(id).getBody();
+
+        HashMap<Long, CoachGuideDetail> map = new HashMap<Long, CoachGuideDetail>();
+        
+        List<CoachGuideDetail> guideDetails = new ArrayList<CoachGuideDetail>();
+
+        var sales = 0L;
+
+        for(var i = 0; i < orders.size(); i++){
+            var order = orders.get(i);
+            var guideId = order.getOrderDetailGuideId().getGuideId();
+            if(map.containsKey(guideId)){
+                CoachGuideDetail coachGuideDetail = new CoachGuideDetail();
+                coachGuideDetail.setGuideId(guideId);
+                coachGuideDetail.setQuantify(1L);
+                map.put(guideId, coachGuideDetail);
+            }else{
+                var update = map.get(guideId);
+                var quantify = update.getQuantify() + 1;
+                update.setQuantify(quantify);
+                map.put(guideId, update);
+            }
+            sales = sales + 1L;
+        }
+
+        
+
+        for(Entry<Long, CoachGuideDetail> entry : map.entrySet()){
+
+            var detail = entry.getValue();
+
+            var guide = guideClient.getById(detail.getGuideId()).getBody();
+
+            detail.setGuide(guide);
+
+            guideDetails.add(detail);
+        }
+
+        response.setGuideDetails(guideDetails);
+        response.setSales(sales);
+        response.setCoach(coach);
+        response.setCoachId(id);
+
+        return response;
     }
 
 }

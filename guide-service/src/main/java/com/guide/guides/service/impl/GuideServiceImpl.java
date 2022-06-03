@@ -130,6 +130,15 @@ public class GuideServiceImpl implements GuideService {
                 .orElseThrow(() -> new ResourceNotFoundExceptionRequest("Category not found"));
 
         var game = gameClient.getById(request.getGameId()).getBody();
+        var coach = coachClient.geById(request.getCoachId()).getBody();
+
+        if(game.getId() == null){
+            throw new ResourceNotFoundExceptionRequest("Game not found");
+        }
+
+        if(coach.getId() == null){
+            throw new ResourceNotFoundExceptionRequest("Coach not found");
+        }
 
         var entity = convertToEntity(request, category);
 
@@ -137,6 +146,7 @@ public class GuideServiceImpl implements GuideService {
             guideRepository.save(entity);
             var response = convertToResponse(entity);
             response.setGame(game);
+            response.setCoach(coach);
             return response;
         } catch (Exception e) {
             throw new ResourceNotFoundExceptionRequest("Error ocurred while creating guide");
@@ -153,11 +163,13 @@ public class GuideServiceImpl implements GuideService {
         entity = convertToEntity(request, category, id);
 
         var game = gameClient.getById(request.getGameId()).getBody();
+        var coach = coachClient.geById(request.getCoachId()).getBody();
 
         try {
             guideRepository.save(entity);
             var response = convertToResponse(entity);
             response.setGame(game);
+            response.setCoach(coach);
             return response;
         } catch (Exception e) {
             throw new ResourceNotFoundExceptionRequest("Error ocurred while updating guide");

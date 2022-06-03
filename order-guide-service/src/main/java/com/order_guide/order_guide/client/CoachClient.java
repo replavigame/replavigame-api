@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(name = "coach-service", path = "/coaches")
 public interface CoachClient {
     @GetMapping("/{id}")
-    public ResponseEntity<Coach> getById(@PathVariable("id") Long id);
+    public ResponseEntity<Coach> geById(@PathVariable("id") Long id);
 
     @PutMapping("/{id}/points")
     public ResponseEntity<Coach> updateWallet(@PathVariable("id") Long id,

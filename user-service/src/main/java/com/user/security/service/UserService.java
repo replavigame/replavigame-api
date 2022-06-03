@@ -17,5 +17,7 @@ public interface UserService {
 
     UserResponse update(UserRequest request, Long id);
 
+    UserResponse updateWallet(Long points, Long id);
+
     void delete(Long id);
 }

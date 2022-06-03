@@ -2,6 +2,7 @@ package com.order_guide.order_guide.controller;
 
 import java.util.List;
 
+import com.order_guide.order_guide.dto.CoachOrderDetailResponse;
 import com.order_guide.order_guide.dto.DetailResponse;
 import com.order_guide.order_guide.dto.OrderDetailGuideResponse;
 import com.order_guide.order_guide.dto.OrderDetailRequest;
@@ -48,5 +49,10 @@ public class OrderDetailGuideController {
         orderDetailGuideService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
+    
+    @GetMapping("/coach/{id}")
+    private ResponseEntity<CoachOrderDetailResponse> getAllInfoSaleGuides(@PathVariable("id") Long id) {
+        var response = orderDetailGuideService.getAllByCoachId(id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }
