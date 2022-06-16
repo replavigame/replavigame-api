@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "guide-service", path = "/guides")
+@FeignClient(name = "guide-service", path = "/guides", fallback = GuideHystrixFallbackFactory.class)
 public interface GuideClient {
     @GetMapping("/{id}")
     public ResponseEntity<Guide> getById(@PathVariable("id") Long id);

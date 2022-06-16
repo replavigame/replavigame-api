@@ -64,7 +64,7 @@ public class TestOrderDetailGuideServiceImpl {
     Category category;
 
     @BeforeEach
-    void init(){
+    void init() {
         MockitoAnnotations.openMocks(this);
         user = new User();
         user.setCreatedDate(new Date());
@@ -97,7 +97,6 @@ public class TestOrderDetailGuideServiceImpl {
 
         guide = new Guide();
         guide.setCategory(category);
-        guide.setCoach(coach);
         guide.setCoachId(1L);
         guide.setDescount(10.0);
         guide.setDescription("Nuevo curso de Test");
@@ -105,7 +104,7 @@ public class TestOrderDetailGuideServiceImpl {
         guide.setId(1L);
         guide.setPoints(20L);
         guide.setTitle("Jerarquias");
-    
+
         orderdetailguide = new OrderDetailGuide();
         orderdetailguide.setCoach(coach);
         orderdetailguide.setCoachId(1L);
@@ -117,83 +116,83 @@ public class TestOrderDetailGuideServiceImpl {
 
     @Test
     @DisplayName("When Find All Then Return List Detail Guide")
-    void WhenFindAllThenReturnListDetailGuide(){
-        //Arrange
+    void WhenFindAllThenReturnListDetailGuide() {
+        // Arrange
         List<OrderDetailGuide> list = new ArrayList<OrderDetailGuide>();
         list.add(orderdetailguide);
         when(orderDetailGuideRepository.findAll()).thenReturn(list);
-        //Para cuando sea error y sea un dato normal
-        //doThrow(ResourceNotFoundExceptionRequest.class).when(orderDetailGuideRepository).deleteAll();
+        // Para cuando sea error y sea un dato normal
+        // doThrow(ResourceNotFoundExceptionRequest.class).when(orderDetailGuideRepository).deleteAll();
 
-        //Act
+        // Act
         List<DetailResponse> response = orderDetailGuideServiceImpl.getAll();
 
-        //Assert
+        // Assert
         assertEquals(1L, response.size());
 
     }
-    
-    //@Test
-    //@DisplayName("Get All By Order Id Return List Detail Guide")
-    //void GetAllByOrderIdReturnListDetailGuide(){}
 
-    //@Test
-    //@DisplayName("Create Order Detail Guide")
-    //void CreateOrderDetailGuide(){}
+    // @Test
+    // @DisplayName("Get All By Order Id Return List Detail Guide")
+    // void GetAllByOrderIdReturnListDetailGuide(){}
+
+    // @Test
+    // @DisplayName("Create Order Detail Guide")
+    // void CreateOrderDetailGuide(){}
 
     @Test
     @DisplayName("Delete Order Detail Guide")
-    void DeleteOrderDetailGuide(){
-        //Arrange
+    void DeleteOrderDetailGuide() {
+        // Arrange
         doNothing().when(orderDetailGuideRepository).deleteById(orderDetailGuideId);
         doNothing().when(orderDetailGuideRepository).deleteAllByOrderGuideId(1L);
-        
-        //Act
+
+        // Act
         Throwable exception = catchThrowable(() -> {
             orderDetailGuideServiceImpl.delete(1L);
         });
 
-        //Assert
+        // Assert
         assertThat(exception).isEqualTo(null);
     }
 
     @Test
     @DisplayName("Delete Order Detail Guide")
-    void WhenDeleteAllByOrderGuideIdButErrorOcurredWhileDeleting(){
-        //Arrange
+    void WhenDeleteAllByOrderGuideIdButErrorOcurredWhileDeleting() {
+        // Arrange
         doNothing().when(orderDetailGuideRepository).deleteById(orderDetailGuideId);
         doThrow(ResourceNotFoundExceptionRequest.class).when(orderDetailGuideRepository).deleteAllByOrderGuideId(1L);
 
-        //doThrow(ResourceNotFoundExceptionRequest.class).when(orderGuideRepository).deleteById(1L);
-        
-        //Act
+        // doThrow(ResourceNotFoundExceptionRequest.class).when(orderGuideRepository).deleteById(1L);
+
+        // Act
         String message = "Error ocurred while deleting order guide";
         Throwable exception = catchThrowable(() -> {
             orderDetailGuideServiceImpl.delete(1L);
         });
 
-        //Assert
+        // Assert
         assertThat(exception).isInstanceOf(ResourceNotFoundExceptionRequest.class).hasMessage(message);
     }
 
     @Test
     @DisplayName("Delete Order Detail Guide")
-    void WhenDeleteByIdButErrorOcurredWhileDeleting(){
-        //Arrange
+    void WhenDeleteByIdButErrorOcurredWhileDeleting() {
+        // Arrange
         doThrow(ResourceNotFoundExceptionRequest.class).when(orderGuideRepository).deleteById(1L);
         doNothing().when(orderDetailGuideRepository).deleteAllByOrderGuideId(1L);
-        
-        //Act
+
+        // Act
         String message = "Error ocurred while deleting order guide";
         Throwable exception = catchThrowable(() -> {
             orderDetailGuideServiceImpl.delete(1L);
         });
 
-        //Assert
+        // Assert
         assertThat(exception).isInstanceOf(ResourceNotFoundExceptionRequest.class).hasMessage(message);
     }
 
-    //@Test
-    //@DisplayName("Get All By Coach Id Return List Guide Detail")
-    //void GetAllByCoachIdReturnListGuideDetail(){}
+    // @Test
+    // @DisplayName("Get All By Coach Id Return List Guide Detail")
+    // void GetAllByCoachIdReturnListGuideDetail(){}
 }

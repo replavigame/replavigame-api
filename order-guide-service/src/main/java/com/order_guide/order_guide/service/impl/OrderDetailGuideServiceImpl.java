@@ -53,6 +53,7 @@ public class OrderDetailGuideServiceImpl implements OrderDetailGuideService {
         response.setPrice(entity.getPrice());
         response.setCoach(entity.getCoach());
         response.setGuide(entity.getGuide());
+        response.setCoachId(entity.getCoachId());
 
         return response;
     }
@@ -85,15 +86,41 @@ public class OrderDetailGuideServiceImpl implements OrderDetailGuideService {
             throw new ResourceNotFoundExceptionRequest("Order not found by order id");
         }
 
-        var detail = entities.stream().map(entity -> convertToResponse(entity)).collect(Collectors.toList());
+        var total = 0L;
+
+        var detailResponse = entities.stream().map(entity -> {
+            DetailResponse detail = new DetailResponse();
+
+            var coachId = entity.getCoachId();
+            var guideId = entity.getOrderDetailGuideId().getGuideId();
+            var orderId = entity.getOrderDetailGuideId().getOrderGuideId();
+
+            var coach = coachClient.geById(coachId).getBody();
+            var guide = guideClient.getById(guideId).getBody();
+
+            var price = guide.getPoints();
+
+            detail.setCoach(coach);
+            detail.setGuide(guide);
+            detail.setGuideId(guideId);
+            detail.setOrderId(orderId);
+            detail.setPrice(price);
+            detail.setCoachId(coachId);
+
+            // total = total + price;
+
+            return detail;
+        }).collect(Collectors.toList());
 
         var order = entities.get(0).getOrderGuide();
 
         var user = userClient.getById(order.getCustomerId()).getBody();
 
-        var response = convertToOrderDetailResponse(detail, order);
+        OrderDetailGuideResponse response = convertToOrderDetailResponse(detailResponse, order);
 
         response.setUser(user);
+
+        response.setTotal(total);
 
         return response;
     }
@@ -109,8 +136,8 @@ public class OrderDetailGuideServiceImpl implements OrderDetailGuideService {
 
         var user = userClient.getById(request.getUserId()).getBody();
 
-        if(user.getId() == null){
-            throw new ResourceNotFoundExceptionRequest("Error user microservice");
+        if (user.getId() == null) {
+            throw new ResourceNotFoundExceptionRequest("Error ocurred in user microservice");
         }
 
         orderGuide.setUser(user);
@@ -131,10 +158,10 @@ public class OrderDetailGuideServiceImpl implements OrderDetailGuideService {
             OrderDetailGuideId orderDetailGuideId = new OrderDetailGuideId();
 
             var guide = guideClient.getById(detail.getGuideId()).getBody();
-            var coach = coachClient.updateWallet(guide.getCoachId(), guide.getPoints()*-1).getBody();
+            var coach = coachClient.updateWallet(guide.getCoachId(), guide.getPoints() * -1).getBody();
 
-            if(coach.getId() == null){
-                throw new ResourceNotFoundExceptionRequest("Error coach microservice");
+            if (coach.getId() == null) {
+                throw new ResourceNotFoundExceptionRequest("Error ocurred in coach microservice");
             }
 
             // Order de los id
@@ -148,6 +175,7 @@ public class OrderDetailGuideServiceImpl implements OrderDetailGuideService {
             orderDetailGuide.setOrderGuide(orderGuide);
             orderDetailGuide.setGuide(guide);
             orderDetailGuide.setCoach(coach);
+            orderDetailGuide.setCoachId(guide.getCoachId());
 
             orderDetailGuideRepository.save(orderDetailGuide);
 
@@ -160,8 +188,8 @@ public class OrderDetailGuideServiceImpl implements OrderDetailGuideService {
 
         user = userClient.updateWallet(total, user.getId()).getBody();
 
-        if(user.getId() == null){
-            throw new ResourceNotFoundExceptionRequest("Error user microservice");
+        if (user.getId() == null) {
+            throw new ResourceNotFoundExceptionRequest("Error ocurred in user microservice");
         }
 
         var detail = entities.stream().map(entity -> convertToResponse(entity)).collect(Collectors.toList());
@@ -190,7 +218,7 @@ public class OrderDetailGuideServiceImpl implements OrderDetailGuideService {
 
     @Override
     public CoachOrderDetailResponse getAllByCoachId(Long id) {
-        
+
         var orders = orderDetailGuideRepository.getAllByCoachId(id);
 
         CoachOrderDetailResponse response = new CoachOrderDetailResponse();
@@ -198,20 +226,20 @@ public class OrderDetailGuideServiceImpl implements OrderDetailGuideService {
         Coach coach = coachClient.geById(id).getBody();
 
         HashMap<Long, CoachGuideDetail> map = new HashMap<Long, CoachGuideDetail>();
-        
+
         List<CoachGuideDetail> guideDetails = new ArrayList<CoachGuideDetail>();
 
         var sales = 0L;
 
-        for(var i = 0; i < orders.size(); i++){
+        for (var i = 0; i < orders.size(); i++) {
             var order = orders.get(i);
             var guideId = order.getOrderDetailGuideId().getGuideId();
-            if(map.containsKey(guideId)){
+            if (!map.containsKey(guideId)) {
                 CoachGuideDetail coachGuideDetail = new CoachGuideDetail();
                 coachGuideDetail.setGuideId(guideId);
                 coachGuideDetail.setQuantify(1L);
                 map.put(guideId, coachGuideDetail);
-            }else{
+            } else {
                 var update = map.get(guideId);
                 var quantify = update.getQuantify() + 1;
                 update.setQuantify(quantify);
@@ -220,9 +248,7 @@ public class OrderDetailGuideServiceImpl implements OrderDetailGuideService {
             sales = sales + 1L;
         }
 
-        
-
-        for(Entry<Long, CoachGuideDetail> entry : map.entrySet()){
+        for (Entry<Long, CoachGuideDetail> entry : map.entrySet()) {
 
             var detail = entry.getValue();
 

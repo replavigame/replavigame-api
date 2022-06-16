@@ -2,6 +2,9 @@ package com.order_guide.order_guide.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,5 +21,6 @@ public class User {
 
     private String lastName;
 
+    @JsonFormat(pattern = "yyyy/MM/dd", shape = Shape.STRING)
     private Date createdDate;
 }
