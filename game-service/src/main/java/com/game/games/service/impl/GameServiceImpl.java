@@ -74,6 +74,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public GameResponse create(GameRequest request) {
+
         var entity = convertToEntity(request);
 
         try {
