@@ -2,6 +2,7 @@ package com.order_game_coin.order_game_coin.controller;
 
 import java.util.List;
 
+import com.order_game_coin.order_game_coin.dto.OrdeDetailGameCoinPayment;
 import com.order_game_coin.order_game_coin.dto.OrderDetailGameCoinRequest;
 import com.order_game_coin.order_game_coin.dto.OrderDetailGameCoinResponse;
 import com.order_game_coin.order_game_coin.dto.OrderDetailSimpleResponse;
@@ -38,7 +39,7 @@ public class OrderDetailGameCoinController {
     }
 
     @PostMapping
-    private ResponseEntity<OrderDetailGameCoinResponse> create(@RequestBody OrderDetailGameCoinRequest request) {
+    private ResponseEntity<OrdeDetailGameCoinPayment> create(@RequestBody OrderDetailGameCoinRequest request) {
         var response = orderDetailGameCoinService.create(request);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
