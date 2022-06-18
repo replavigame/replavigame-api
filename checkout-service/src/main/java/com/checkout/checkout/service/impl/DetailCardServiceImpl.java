@@ -92,9 +92,13 @@ public class DetailCardServiceImpl implements DetailCardService {
     @Override
     public DetailCardResponse create(DetailCardRequest request) {
         var entity = convertToEntity(request);
+
+        var user = userClient.geById(request.getUserId()).getBody();
+
         try {
             detailCardRepository.save(entity);
             var response = convertToResponse(entity);
+            response.setUser(user);
             return response;
         } catch (Exception e) {
             throw new ResourceNotFoundExceptionRequest("Error ocurred while creating card");
@@ -107,9 +111,12 @@ public class DetailCardServiceImpl implements DetailCardService {
                 .orElseThrow(() -> new ResourceNotFoundExceptionRequest("Card not found"));
         entity = convertToEntity(request, id);
 
+        var user = userClient.geById(request.getUserId()).getBody();
+
         try {
             detailCardRepository.save(entity);
             var response = convertToResponse(entity);
+            response.setUser(user);
             return response;
         } catch (Exception e) {
             throw new ResourceNotFoundExceptionRequest("Error ocurred while updating card");

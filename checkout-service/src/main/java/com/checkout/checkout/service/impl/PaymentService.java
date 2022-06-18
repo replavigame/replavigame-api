@@ -1,5 +1,6 @@
 package com.checkout.checkout.service.impl;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,14 +23,16 @@ import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class PaymentService {
 
     @Autowired
     private OrderGameCoinDetailClient orderGameCoinDetailClient;
 
-    private static final String CLIENT_ID = "Ab3iwLdPmG9dnZWw44EyEk0RHPB4oD75SIrmK-m8ByJuClk4TEshK-kHI-qnQHSwlvu5GQx8McErINj_";
-    private static final String CLIENT_SECRET = "EATEnr0GzzQDygMb2Rbab7nA2My_4PqrqDIFRNS2u8ewB4miMMo4ngiEkhIPtoJ58K8Q7fAud3TBEhjp";
+    private static final String CLIENT_ID = "ATOnCqVzaLmmpPuKYqx7LwgSVefMJWgs-CZLcL1N21lO7XVJ7VHcOFMvmqx3ucZ2kcUaq5QhKSYQ--Y6";
+    private static final String CLIENT_SECRET = "EKDcn2wb8GG9hjKvg25DeVvvZcwZ-RWoOvUjZwsGzoBSMMFiQJMcHAnaSTLJ4bsjm7zL4Q-vBLu216WC";
     private static final String MODE = "sandbox";
 
     public String authorizePayment(OrderDetailGameCoinRequest request) throws PayPalRESTException {
@@ -44,32 +47,31 @@ public class PaymentService {
 
         Payer payer = new Payer();
         payer.setPaymentMethod("paypal");
-
         PayerInfo payerInfo = new PayerInfo();
         payerInfo.setFirstName(user.getName())
                 .setLastName(user.getLastName())
                 .setEmail(user.getEmail());
-
         payer.setPayerInfo(payerInfo);
 
         RedirectUrls redirectUrls = new RedirectUrls();
-        redirectUrls.setCancelUrl("cancel");
-        redirectUrls.setReturnUrl("return");
-
+        redirectUrls.setCancelUrl("http://localhost:5000/cancel");
+        redirectUrls.setReturnUrl("http://localhost:5000/return");
         List<Transaction> listTransaction = getTransactionInformation(orderDetail);
-
+        System.out.println(listTransaction);
         Payment requestPayment = new Payment();
         requestPayment.setTransactions(listTransaction)
                 .setRedirectUrls(redirectUrls)
                 .setPayer(payer)
                 .setIntent("authorize");
-
         APIContext apiContext = new APIContext(CLIENT_ID, CLIENT_SECRET, MODE);
         Payment approvedPayment = requestPayment.create(apiContext);
-
         System.out.println(approvedPayment);
-
         return getApprovalLink(approvedPayment);
+    }
+
+    public Payment getPaymentDetails(String paymentId) throws PayPalRESTException {
+        APIContext apiContext = new APIContext(CLIENT_ID, CLIENT_SECRET, MODE);
+        return Payment.get(apiContext, paymentId);
     }
 
     private String getApprovalLink(Payment approvedPayment) {
@@ -86,15 +88,17 @@ public class PaymentService {
     }
 
     private List<Transaction> getTransactionInformation(OrderDetailGameCoinPayment orderDetail) {
-        String subTotal = String.format("%.2f", orderDetail.getTotal());
+        DecimalFormat df = new DecimalFormat("#.##");
+        var total = String.valueOf(df.format(orderDetail.getTotal()));
+
         List<DetailGameCoinResponse> detailGameCoin = orderDetail.getLCoinResponses();
 
         Details details = new Details();
-        details.setSubtotal(subTotal);
+        details.setSubtotal(total);
 
         Amount amount = new Amount();
-        amount.setCurrency("PE");
-        amount.setTotal(subTotal);
+        amount.setCurrency("USD");
+        amount.setTotal(total);
         amount.setDetails(details);
 
         Transaction transaction = new Transaction();
@@ -106,10 +110,10 @@ public class PaymentService {
 
         for (DetailGameCoinResponse productDetail : detailGameCoin) {
 
-            String price = String.format("%.2f", productDetail.getSubtotal());
+            String price = String.valueOf(df.format(productDetail.getGameCoin().getPrice()));
 
             Item item = new Item();
-            item.setCurrency("PE")
+            item.setCurrency("USD")
                     .setName(productDetail.getGameCoin().getName())
                     .setPrice(price)
                     .setQuantity(productDetail.getQuantify().toString());
