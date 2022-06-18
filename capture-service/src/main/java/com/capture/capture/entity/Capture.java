@@ -26,8 +26,10 @@ public class Capture {
 
     private Date date;
 
-    private Long userId;
+    private String token;
 
     private String payerId;
+
+    private String paymentId;
 
 }

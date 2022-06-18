@@ -54,8 +54,8 @@ public class PaymentService {
         payer.setPayerInfo(payerInfo);
 
         RedirectUrls redirectUrls = new RedirectUrls();
-        redirectUrls.setCancelUrl("http://localhost:5000/cancel");
-        redirectUrls.setReturnUrl("http://localhost:5000/return");
+        redirectUrls.setCancelUrl("http://localhost:8112/captures/cancel");
+        redirectUrls.setReturnUrl("http://localhost:8112/captures/accept");
         List<Transaction> listTransaction = getTransactionInformation(orderDetail);
         System.out.println(listTransaction);
         Payment requestPayment = new Payment();

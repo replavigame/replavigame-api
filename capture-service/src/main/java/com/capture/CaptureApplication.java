@@ -12,10 +12,10 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableHystrix
 @EnableFeignClients
 @EnableHystrixDashboard
-public class CheckoutApplication {
+public class CaptureApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(CheckoutApplication.class, args);
+		SpringApplication.run(CaptureApplication.class, args);
 	}
 
 }
