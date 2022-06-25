@@ -10,7 +10,7 @@ spring:
           searchPaths: config-data
           user-name: ${GIT_USER}
           password: ${GIT_PASSWORD}
-          default-label: "feature/AddPayment"
+          default-label: "feature/deployment"
   security:
     user:
       name: root
