@@ -190,6 +190,8 @@ public class OrderDetailGuideServiceImpl implements OrderDetailGuideService {
 
         if (user.getId() == null) {
             throw new ResourceNotFoundExceptionRequest("Error ocurred in user microservice");
+        } else if (user.getPoints() < total) {
+            throw new ResourceNotFoundExceptionRequest("Insufficient balance");
         }
 
         var detail = entities.stream().map(entity -> convertToResponse(entity)).collect(Collectors.toList());
