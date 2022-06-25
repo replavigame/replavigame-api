@@ -1,11 +1,11 @@
 version: '3.7'
 
 services:
-  app:
+  config-microservice:
     image: 'config-service:latest'
     build:
       context: .
-    working_dir: /app
-    container_name: app
+    working_dir: /config-microservice
+    container_name: config-microservice
     ports:
       - 8081:8081

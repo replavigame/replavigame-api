@@ -5,7 +5,7 @@ services:
     image: 'registry-service:latest'
     build:
       context: .
-    working_dir: /app
-    container_name: app
+    working_dir: /registry-microservice
+    container_name: registry-microservice
     ports:
       - 8099:8099
