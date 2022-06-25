@@ -5,7 +5,7 @@ spring:
 
   #DB
   datasource:
-    url: jdbc:mysql://mysqldb:3306/todos?useSSL=false
+    url: jdbc:mysql://mysqldb:3306/coach-service
     driverClassName: com.mysql.jdbc.Driver
     username: root
     password: secret
@@ -16,7 +16,7 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect

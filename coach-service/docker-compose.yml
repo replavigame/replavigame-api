@@ -2,14 +2,15 @@ version: '3.7'
 
 services:
   app:
-    image: 'config-service:latest'
+    image: 'coach-service:latest'
     build:
       context: .
+    working_dir: /app
     container_name: app
     depends_on:
       - db
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/todos?useSSL=false
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/coach-service
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=secret
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
@@ -20,10 +21,10 @@ services:
   db:
     image: mysql:5.7
     volumes:
-      - todo-mysql-data:/var/lib/mysql
+      - coach-service-mysql-data:/var/lib/mysql
     container_name: db
     environment:
       MYSQL_ROOT_PASSWORD: secret
-      MYSQL_DATABASE: todos
+      MYSQL_DATABASE: coach-service
 volumes:
   todo-mysql-data:
