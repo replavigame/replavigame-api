@@ -42,6 +42,7 @@ public class CoachDocumentServiceImpl implements CoachDocumentService {
         return coachDocument;
     }
 
+
     @Override
     public CoachDocumentResponse getById(Long id) {
         var entity = coachDocumentRepository.getCoachDocumentById(id)
@@ -64,10 +65,10 @@ public class CoachDocumentServiceImpl implements CoachDocumentService {
     }
 
     @Override
-    public CoachDocumentResponse createCoachDocumentByCoachReportId(CoachDocumentRequest coachDocumentRequest,
-            Long coachReportId) {
+    public CoachDocumentResponse createCoachDocumentByCoachReportId(CoachDocumentRequest coachDocumentRequest, Long coachReportId) {
         var coachReport = coachReportRepository.getCoachReportById(coachReportId)
                 .orElseThrow(() -> new ResourceNotFoundExceptionRequest("CoachReport not found"));
+
 
         var entity = convertToEntity(coachDocumentRequest);
         entity.setCoachReport(coachReport);
@@ -82,8 +83,7 @@ public class CoachDocumentServiceImpl implements CoachDocumentService {
     }
 
     @Override
-    public CoachDocumentResponse updateCoachDocumentByCoachReportId(CoachDocumentRequest coachDocumentRequest,
-            Long coachReportId, Long id) {
+    public CoachDocumentResponse updateCoachDocumentByCoachReportId(CoachDocumentRequest coachDocumentRequest, Long coachReportId, Long id) {
         var coachReport = coachReportRepository.getCoachReportById(coachReportId)
                 .orElseThrow(() -> new ResourceNotFoundExceptionRequest("CoachReport not found"));
         var coachDocument = coachDocumentRepository.getCoachDocumentById(id)
