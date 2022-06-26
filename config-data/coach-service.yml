@@ -5,18 +5,18 @@ spring:
 
   #DB
   datasource:
-    url: jdbc:mysql://mysqldb:3306/coach-service
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/test
     driverClassName: com.mysql.jdbc.Driver
     username: root
     password: secret
-    platform: mysql
+    #platform: mysql
 
   #JPA
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: update
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    #database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
@@ -31,7 +31,7 @@ logging:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8099/eureka/
+      defaultZone: http://ec2-3-86-217-109.compute-1.amazonaws.com:8099/eureka/
 
 Feign:
   circuitbreaker:

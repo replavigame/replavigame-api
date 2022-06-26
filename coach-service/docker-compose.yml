@@ -10,21 +10,27 @@ services:
     depends_on:
       - db
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/coach-service
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=secret
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - SPRING_JPA_SHOW_SQL=true
+      MYSQL_HOST: mysqldb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: secret
+      MYSQL_PORT: 3306
+      #- SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/to do
+      #- SPRING_DATASOURCE_USERNAME=root
+      #- SPRING_DATASOURCE_PASSWORD=secret
+      #- SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      #- SPRING_JPA_SHOW_SQL=true
     ports:
       - 8092:8092
 
   db:
     image: mysql:5.7
+    ports:
+      - 3307:3306
     volumes:
-      - coach-service-mysql-data:/var/lib/mysql
+      - todo-mysql-data:/var/lib/mysql
     container_name: db
     environment:
       MYSQL_ROOT_PASSWORD: secret
-      MYSQL_DATABASE: coach-service
+      MYSQL_DATABASE: todo
 volumes:
   todo-mysql-data:
