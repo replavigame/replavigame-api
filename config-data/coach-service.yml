@@ -3,18 +3,18 @@ server:
 
 spring:
   #DB
-  #datasource:
-    #url: jdbc:mysql://db:3306/to do?createDatabaseIfNotExist=true
-    #driverClassName: com.mysql.jdbc.Driver
-    #username: root
-    #password: password
+  datasource:
+    url: jdbc:mysql://db:3306/todo?createDatabaseIfNotExist=true
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: root
+    password: password
 
   #JPA
-  #jpa:
-    #show-sql: true
-    #hibernate:
-      #ddl-auto: update
-    #database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
 
 
 logging:
