@@ -10,7 +10,7 @@ services:
     depends_on:
       - db
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/todo?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/todo?createDatabaseIfNotExist=true
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=password
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
@@ -20,8 +20,6 @@ services:
 
   db:
     image: mysql:5.7
-    ports:
-      - 3307:3306
     volumes:
       - todo-mysql-data:/var/lib/mysql
     container_name: db
