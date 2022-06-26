@@ -3,6 +3,6 @@ spring:
     name: registry-service
   cloud:
     config:
-      uri: http://host.docker.internal:8081
+      uri: http://ec2-44-206-238-225.compute-1.amazonaws.com:8081
       username: root
       password: s3cr3t
