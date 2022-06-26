@@ -2,27 +2,20 @@ server:
   port: 8092
 
 spring:
-
   #DB
   datasource:
-    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/test
-    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/todo?createDatabaseIfNotExist=true
+    driverClassName: com.mysql.jdbc.Driver
     username: root
-    password: secret
-    #platform: mysql
+    password: password
 
   #JPA
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: update
-    #database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL5Dialect
-        show_sql: true
-        use_sql_comments: false
-        format_sql: false
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+
 
 logging:
   pattern:
