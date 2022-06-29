@@ -10,20 +10,8 @@ spring:
       discovery:
         locator:
           enabled: true
-        routes:
-          - id: user-service
-            uri: lb://user-service
-            predicates:
-              - Path = /users/**
-          - id: order-guide-service
-            uri: lb:///order-guide-service
-            predicates:
-              - Path = /order-guides/**
-          - id: order-game-coin-service
-            uri: lb://order-game-coin-service
-            predicates:
-              - Path = /order-detail-game-coins/**
-          - id: guide-service
-            uri: lb://guide-service
-            predicates:
-              - Path = /guides/**
+      routes:
+        - id: guide-service
+          uri: lb://guide-service
+          predicates:
+            - Path=/guides/**
