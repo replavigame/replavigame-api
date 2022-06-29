@@ -37,7 +37,6 @@ public class DetailGuideRepositoryMockTest {
     @Test
     @DisplayName("Detail Guide Added")
     public void DetailGuideAdded() {
-        DetailGuide detailGuide1 = new DetailGuide();
 
         detailGuide.setName("dsadsa123");
         detailGuide.setVideoUrl("videoUrl2");

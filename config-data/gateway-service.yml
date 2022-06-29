@@ -18,7 +18,7 @@ spring:
         - id: user-service
           uri: lb://user-service
           predicates:
-            - Path=/urser/**
+            - Path=/users/**
         - id: order-guide-service
           uri: lb://order-guide-service
           predicates:
@@ -38,9 +38,9 @@ spring:
         - id: detail-guide-service
           uri: lb://detail-guide-service
           predicates:
-            - Path=/game-detail-guides/**
-        - id: coach-session-service
-          uri: lb://coach-session-service
+            - Path=/detail-guides/**
+        - id: coaching-session-service
+          uri: lb://coaching-session-service
           predicates:
             - Path=/platforms/**, /sessions/**
         - id: coach-service
@@ -51,3 +51,11 @@ spring:
           uri: lb://coach-report-service
           predicates:
             - Path=/coach-documents/**, /coach-reports/**
+        - id: checkout-service
+          uri: lb://checkout-service
+          predicates:
+            - Path=/detail-cards/**, /payments/**
+        - id: capture-service
+          uri: lb://capture-service
+          predicates:
+            - Path=/captures/**
