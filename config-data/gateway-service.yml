@@ -14,5 +14,4 @@ spring:
         - id: guide-service
           uri: lb://guide-service
           predicates:
-            - Path=/guides/**
-            - Path=/categories/**
+            - Path=/guides/**, /categories/**
