@@ -3,6 +3,7 @@ version: '3.7'
 services:
   app:
     image: 'coach-service:latest'
+    hostname: ec2-52-87-180-188.compute-1.amazonaws.com
     build:
       context: .
     working_dir: /app
