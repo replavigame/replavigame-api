@@ -2,29 +2,19 @@ server:
   port: 8102
 
 spring:
-  h2:
-    console:
-      enabled: true
-
   #DB
   datasource:
-    url: jdbc:h2:mem:customerDB;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    driverClassName: org.h2.Driver
-    platform: h2
-    username: sa
-    password:
+    url: jdbc:mysql://db:3306/todo?createDatabaseIfNotExist=true
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: root
+    password: password
 
-  #JPA
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-    database-platform: org.hibernate.dialect.H2Dialect
-    properties:
+    #JPA
+    jpa:
+      show-sql: true
       hibernate:
-        show-sql: true
-        use_sql_console: false
-        format_sql: false
+        ddl-auto: update
+      database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
 
 logging:
   pattern:
@@ -33,7 +23,7 @@ logging:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8099/eureka/
+      defaultZone: http://ec2-3-86-217-109.compute-1.amazonaws.com:8099/eureka/
 
 Feign:
   circuitbreaker:
