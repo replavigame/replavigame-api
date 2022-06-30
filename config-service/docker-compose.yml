@@ -1,0 +1,11 @@
+version: '3.7'
+
+services:
+  app:
+    image: 'config-service:latest'
+    build:
+      context: .
+    working_dir: /app
+    container_name: app
+    ports:
+      - 8081:8081
