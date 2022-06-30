@@ -1,0 +1,11 @@
+version: '3.7'
+
+services:
+  app:
+    image: 'registry-service:latest'
+    build:
+      context: .
+    working_dir: /app
+    container_name: app
+    ports:
+      - 8099:8099
