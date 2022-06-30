@@ -11,8 +11,7 @@ import lombok.Data;
 @Data
 public class OrderDetailGameCoinRequest {
     List<DetailGameCoinRequest> lCoinRequests;
-    private Long customerId;
+    private Long userId;
     @JsonFormat(pattern = "yyyy/MM/dd HH:mm", shape = Shape.STRING)
     private Date saleOrder;
-    private Long total;
 }

@@ -28,10 +28,10 @@ public class CoachDocumentController {
     }
 
     @GetMapping
-    private ResponseEntity<List<CoachDocumentResponse>> getAllCoachDocuments(){
+    private ResponseEntity<List<CoachDocumentResponse>> getAllCoachDocuments() {
         List<CoachDocumentResponse> response;
         response = coachDocumentService.getAll();
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }

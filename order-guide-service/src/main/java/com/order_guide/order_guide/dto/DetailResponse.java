@@ -9,6 +9,7 @@ import lombok.Data;
 public class DetailResponse {
     private Long orderId;
     private Long guideId;
+    private Long coachId;
     private Guide guide;
     private Coach coach;
     private Long price;

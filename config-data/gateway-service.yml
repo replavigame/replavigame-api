@@ -1,0 +1,61 @@
+server:
+  port: 8080
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8099/eureka/
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: guide-service
+          uri: lb://guide-service
+          predicates:
+            - Path=/guides/**, /categories/**
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/users/**
+        - id: order-guide-service
+          uri: lb://order-guide-service
+          predicates:
+            - Path=/order-detail-guides/**, /order-guides/**
+        - id: order-game-coin-service
+          uri: lb://order-game-coin-service
+          predicates:
+            - Path=/order-detail-game-coins/**, /order-game-coins/**
+        - id: game-service
+          uri: lb://game-service
+          predicates:
+            - Path=/games/**
+        - id: game-coin-service
+          uri: lb://game-coin-service
+          predicates:
+            - Path=/game-coin-offers/**
+        - id: detail-guide-service
+          uri: lb://detail-guide-service
+          predicates:
+            - Path=/detail-guides/**
+        - id: coaching-session-service
+          uri: lb://coaching-session-service
+          predicates:
+            - Path=/platforms/**, /sessions/**
+        - id: coach-service
+          uri: lb://coach-service
+          predicates:
+            - Path=/coaches/**
+        - id: coach-report-service
+          uri: lb://coach-report-service
+          predicates:
+            - Path=/coach-documents/**, /coach-reports/**
+        - id: checkout-service
+          uri: lb://checkout-service
+          predicates:
+            - Path=/detail-cards/**, /payments/**
+        - id: capture-service
+          uri: lb://capture-service
+          predicates:
+            - Path=/captures/**

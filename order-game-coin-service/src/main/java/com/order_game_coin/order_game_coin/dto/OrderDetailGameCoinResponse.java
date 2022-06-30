@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 public class OrderDetailGameCoinResponse {
     List<DetailGameCoinResponse> lCoinResponses;
-    private Long customerId;
+    private Long userId;
     private OrderGameCoinResponse orderGameCoinResponse;
+    private Double total;
 }

@@ -6,5 +6,4 @@ import lombok.Data;
 public class DetailGameCoinRequest {
     private Long gameCoinId;
     private Long quantify;
-    private Double priceGameCoin;
 }

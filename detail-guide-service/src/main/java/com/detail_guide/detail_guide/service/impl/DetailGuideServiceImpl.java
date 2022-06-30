@@ -40,13 +40,13 @@ public class DetailGuideServiceImpl implements DetailGuideService {
         return detailGuide;
     }
 
-    private DetailGuide update(DetailGuide entity) {
+    private DetailGuide convertToEntity(DetailGuideRequest request, Long id) {
         DetailGuide detailGuide = new DetailGuide();
-        detailGuide.setGuideId(entity.getGuideId());
-        detailGuide.setName(entity.getName());
-        detailGuide.setPosition(entity.getPosition());
-        detailGuide.setVideoUrl(entity.getVideoUrl());
-        detailGuide.setId(entity.getId());
+        detailGuide.setGuideId(request.getGuideId());
+        detailGuide.setName(request.getName());
+        detailGuide.setPosition(request.getPosition());
+        detailGuide.setVideoUrl(request.getVideoUrl());
+        detailGuide.setId(id);
         return detailGuide;
     }
 
@@ -84,7 +84,7 @@ public class DetailGuideServiceImpl implements DetailGuideService {
         var entity = detailGuideRepository.getDetailGuideById(id)
                 .orElseThrow(() -> new ResourceNotFoundExceptionRequest("Detail guide not found"));
 
-        entity = update(entity);
+        entity = convertToEntity(request, id);
 
         try {
             detailGuideRepository.save(entity);
