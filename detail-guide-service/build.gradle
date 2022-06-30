@@ -41,9 +41,10 @@ dependencies {
 	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix-dashboard', version: '2.2.10.RELEASE'
 	// https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui
 	implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
+	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.29'
 
 	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.h2database:h2'
+	runtimeOnly 'mysql:mysql-connector-java'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
