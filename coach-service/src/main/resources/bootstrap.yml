@@ -9,4 +9,4 @@ spring:
   boot:
     admin:
       client:
-        url: http://localhost:8086
+        url: http://ec2-34-207-122-147.compute-1.amazonaws.com:8086
