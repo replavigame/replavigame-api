@@ -5,6 +5,7 @@ import java.util.List;
 import com.coach.security.dto.AuthenticateRequest;
 import com.coach.security.dto.CoachRequest;
 import com.coach.security.dto.CoachResponse;
+import com.coach.security.dto.CoachResponseSimple;
 import com.coach.security.service.CoachService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/coachs")
+@RequestMapping("/coaches")
 public class CoachController {
 
     @Autowired
@@ -29,6 +31,12 @@ public class CoachController {
     @GetMapping
     private ResponseEntity<List<CoachResponse>> getAll() {
         var response = coachService.getAll();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/game/{id}")
+    private ResponseEntity<List<CoachResponseSimple>> getAllByGameId(@PathVariable("id") Long id) {
+        var response = coachService.getAllByGameId(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -51,8 +59,15 @@ public class CoachController {
     }
 
     @PutMapping("/{id}")
-    private ResponseEntity<CoachResponse> create(@RequestBody CoachRequest request, @PathVariable("id") Long id) {
+    private ResponseEntity<CoachResponse> update(@RequestBody CoachRequest request, @PathVariable("id") Long id) {
         var response = coachService.update(request, id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}/points")
+    private ResponseEntity<CoachResponse> updateWallet(@PathVariable("id") Long id,
+            @RequestParam(name = "point", required = true) Long point) {
+        var response = coachService.updateWallet(id, point);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

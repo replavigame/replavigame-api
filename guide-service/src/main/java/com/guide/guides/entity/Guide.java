@@ -8,6 +8,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.guide.guides.model.Game;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -39,4 +42,7 @@ public class Guide {
     private Long points;
 
     private Double descount;
+
+    @Transient
+    private Game game;
 }

@@ -13,6 +13,4 @@ public interface OrderGuideRepository extends JpaRepository<OrderGuide, Long> {
     Optional<OrderGuide> getOrderGuideById(Long id);
 
     List<OrderGuide> findAllByCustomerId(Long id);
-
-    List<OrderGuide> findAllByCoachId(Long id);
 }

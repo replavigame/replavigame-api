@@ -10,9 +10,7 @@ import lombok.Data;
 @Data
 public class OrderGuideResponse {
     private Long id;
-    private Long totalPrice;
     @JsonFormat(pattern = "yyyy/MM/dd HH:mm", shape = Shape.STRING)
     private Date saleCreated;
-    private Long coachId;
-    private Long customerId;
+    private Long userId;
 }

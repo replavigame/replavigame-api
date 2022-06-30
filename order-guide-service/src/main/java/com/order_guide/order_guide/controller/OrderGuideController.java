@@ -2,7 +2,6 @@ package com.order_guide.order_guide.controller;
 
 import java.util.List;
 
-import com.order_guide.order_guide.dto.OrderGuideRequest;
 import com.order_guide.order_guide.dto.OrderGuideResponse;
 import com.order_guide.order_guide.service.OrderGuideService;
 
@@ -14,8 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -37,12 +36,6 @@ public class OrderGuideController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/coach/{id}")
-    private ResponseEntity<List<OrderGuideResponse>> getAllByCoachId(@PathVariable("id") Long id) {
-        var response = orderGuideService.getAllByCoachId(id);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
     @GetMapping("/{id}")
     private ResponseEntity<OrderGuideResponse> getById(@PathVariable("id") Long id) {
         var response = orderGuideService.getById(id);
@@ -50,15 +43,16 @@ public class OrderGuideController {
     }
 
     @PostMapping
-    private ResponseEntity<OrderGuideResponse> create(@RequestBody OrderGuideRequest request) {
-        var response = orderGuideService.create(request);
+    private ResponseEntity<OrderGuideResponse> create(@RequestParam(name = "userId") Long userId) {
+        var response = orderGuideService.create(userId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    private ResponseEntity<OrderGuideResponse> update(@RequestBody OrderGuideRequest request,
+    private ResponseEntity<OrderGuideResponse> update(
+            @RequestParam(name = "userId") Long userId,
             @PathVariable("id") Long id) {
-        var response = orderGuideService.update(request, id);
+        var response = orderGuideService.update(userId, id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

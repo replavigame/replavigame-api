@@ -1,5 +1,6 @@
 package com.coach.security.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.coach.security.entity.Coach;
@@ -18,4 +19,6 @@ public interface CoachRepository extends JpaRepository<Coach, Long> {
     Optional<Coach> getCoachByNameCoach(String nameCoach);
 
     Optional<Coach> getCoachById(Long id);
+
+    List<Coach> findAllByGameId(Long id);
 }

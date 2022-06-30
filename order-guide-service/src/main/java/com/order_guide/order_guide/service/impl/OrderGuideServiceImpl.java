@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.order_guide.exception.ResourceNotFoundExceptionRequest;
-import com.order_guide.order_guide.dto.OrderGuideRequest;
 import com.order_guide.order_guide.dto.OrderGuideResponse;
 import com.order_guide.order_guide.entity.OrderGuide;
 import com.order_guide.order_guide.repository.OrderGuideRepository;
@@ -23,31 +22,25 @@ public class OrderGuideServiceImpl implements OrderGuideService {
     private OrderGuideResponse convertToResponse(OrderGuide entity) {
 
         OrderGuideResponse response = new OrderGuideResponse();
-        response.setCoachId(entity.getCoachId());
-        response.setCustomerId(entity.getCustomerId());
+        response.setUserId(entity.getCustomerId());
         response.setId(entity.getId());
         response.setSaleCreated(entity.getSaleCreated());
-        response.setTotalPrice(entity.getTotalPrice());
 
         return response;
     }
 
-    private OrderGuide convertToEntity(OrderGuideRequest request) {
+    private OrderGuide convertToEntity(Long userId) {
         OrderGuide orderGuide = new OrderGuide();
-        orderGuide.setCoachId(request.getCoachId());
-        orderGuide.setCustomerId(request.getCustomerId());
+        orderGuide.setCustomerId(userId);
         orderGuide.setSaleCreated(new Date());
-        orderGuide.setTotalPrice(request.getTotalPrice());
 
         return orderGuide;
     }
 
-    private OrderGuide convertToEntity(OrderGuideRequest request, Long id) {
+    private OrderGuide convertToEntity(Long userId, Long id) {
         OrderGuide orderGuide = new OrderGuide();
-        orderGuide.setCoachId(request.getCoachId());
-        orderGuide.setCustomerId(request.getCustomerId());
+        orderGuide.setCustomerId(userId);
         orderGuide.setSaleCreated(new Date());
-        orderGuide.setTotalPrice(request.getTotalPrice());
         orderGuide.setId(id);
 
         return orderGuide;
@@ -68,13 +61,6 @@ public class OrderGuideServiceImpl implements OrderGuideService {
     }
 
     @Override
-    public List<OrderGuideResponse> getAllByCoachId(Long id) {
-        var entities = orderGuideRepository.findAllByCoachId(id);
-        var response = entities.stream().map(entity -> convertToResponse(entity)).collect(Collectors.toList());
-        return response;
-    }
-
-    @Override
     public OrderGuideResponse getById(Long id) {
         var entity = orderGuideRepository.getOrderGuideById(id)
                 .orElseThrow(() -> new ResourceNotFoundExceptionRequest("Order guide not found"));
@@ -83,8 +69,8 @@ public class OrderGuideServiceImpl implements OrderGuideService {
     }
 
     @Override
-    public OrderGuideResponse create(OrderGuideRequest request) {
-        var entity = convertToEntity(request);
+    public OrderGuideResponse create(Long userId) {
+        var entity = convertToEntity(userId);
 
         try {
             orderGuideRepository.save(entity);
@@ -96,12 +82,12 @@ public class OrderGuideServiceImpl implements OrderGuideService {
     }
 
     @Override
-    public OrderGuideResponse update(OrderGuideRequest request, Long id) {
+    public OrderGuideResponse update(Long userId, Long id) {
 
         var entity = orderGuideRepository.getOrderGuideById(id)
                 .orElseThrow(() -> new ResourceNotFoundExceptionRequest("Order guide not found"));
 
-        entity = convertToEntity(request, id);
+        entity = convertToEntity(userId, id);
 
         try {
             orderGuideRepository.save(entity);
