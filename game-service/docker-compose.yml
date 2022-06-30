@@ -1,0 +1,31 @@
+version: '3.7'
+
+services:
+  app:
+    image: 'game-service:latest'
+    hostname: ec2-3-92-234-64.compute-1.amazonaws.com
+    build:
+      context: .
+    working_dir: /app
+    container_name: app
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/todo?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_SHOW_SQL=true
+    ports:
+      - 8119:8119
+
+  db:
+    image: mysql:5.7
+    volumes:
+      - todo-mysql-data:/var/lib/mysql
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: todo
+volumes:
+  todo-mysql-data:
