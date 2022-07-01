@@ -19,6 +19,7 @@ import org.mockito.Spy;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import com.order_guide.exception.ResourceNotFoundExceptionRequest;
+import com.order_guide.order_guide.dto.OrderGuideRequest;
 import com.order_guide.order_guide.dto.OrderGuideResponse;
 import com.order_guide.order_guide.entity.OrderGuide;
 import com.order_guide.order_guide.model.User;
@@ -131,13 +132,85 @@ public class TestOrderGuideServiceImpl {
         assertThat(exception).isInstanceOf(ResourceNotFoundExceptionRequest.class).hasMessage(message);
     }
 
-    // @Test
-    // @DisplayName("Create Order Guide")
-    // void CreateOrderGuide(){}
+    @Test
+    @DisplayName("Create Order Guide")
+    void CreateOrderGuide(){
+        //Arrange
+        OrderGuideRequest request = new OrderGuideRequest();
+        request.setCustomerId(2L);
+        request.setSaleCreated(new Date());
+        request.setUser(user2);
 
-    // @Test
-    // @DisplayName("Update Order Guide")
-    // void UpdateOrderGuide(){}
+        when(orderGuideRepository.save(Mockito.any())).thenReturn(orderguide1);
+        when(orderGuideRepository.getOrderGuideById(1L)).thenReturn(Optional.of(orderguide));
+        //Act
+        OrderGuideResponse response = orderGuideServiceImpl.create(request);
+        //Assert
+        assertEquals(2L, response.getCustomerId());
+    }
+
+    @Test
+    @DisplayName("When Create A Guide But Error Ocurred While Creating")
+    void WhenCreateButErrorOcurredWhileCreating(){
+        //Arrange
+        OrderGuideRequest request = new OrderGuideRequest();
+        request.setCustomerId(2L);
+        request.setSaleCreated(new Date());
+        request.setUser(user2);
+
+        when(orderGuideRepository.save(Mockito.any())).thenReturn(ResourceNotFoundExceptionRequest.class);
+        when(orderGuideRepository.getOrderGuideById(1L)).thenReturn(Optional.of(orderguide));
+
+        //Act
+        final OrderGuideRequest finalRequest = request;
+        String message = "Error ocurred while creating order guide";
+        Throwable exception = catchThrowable(() -> {
+            orderGuideServiceImpl.create(finalRequest);
+        });
+
+        //Assert
+        assertThat(exception).isInstanceOf(ResourceNotFoundExceptionRequest.class).hasMessage(message);
+    }
+
+    @Test
+    @DisplayName("Update Order Guide")
+    void UpdateOrderGuide(){
+        //Arrange
+        OrderGuideRequest request = new OrderGuideRequest();
+        request.setCustomerId(2L);
+        request.setSaleCreated(new Date());
+        request.setUser(user2);
+
+        when(orderGuideRepository.save(Mockito.any())).thenReturn(orderguide1);
+        when(orderGuideRepository.getOrderGuideById(1L)).thenReturn(Optional.of(orderguide));
+        //Act
+        OrderGuideResponse response = orderGuideServiceImpl.update(request, 1L)
+        //Assert
+        assertEquals(2L, response.getCustomerId());
+    }
+
+    @Test
+    @DisplayName("When Update A OrderGuide But Error Ocurred While Creating")
+    void WhenUpdateAOrderGuideButErrorOcurredWhileUpdating(){
+        //Arrange
+        OrderGuideRequest request = new OrderGuideRequest();
+        request.setCustomerId(2L);
+        request.setSaleCreated(new Date());
+        request.setUser(user2);
+
+        when(orderGuideRepository.save(Mockito.any())).thenReturn(ResourceNotFoundExceptionRequest.class);
+        when(orderGuideRepository.getOrderGuideById(1L)).thenReturn(Optional.of(orderguide));
+
+        //Act
+        final OrderGuideRequest finalRequest = request;
+        String message = "Error ocurred while updating order guide";
+        Throwable exception = catchThrowable(() -> {
+            orderGuideServiceImpl.update(finalRequest);
+        });
+
+        //Assert
+        assertThat(exception).isInstanceOf(ResourceNotFoundExceptionRequest.class).hasMessage(message);
+    }
 
     @Test
     @DisplayName("Delete Order Guide")
