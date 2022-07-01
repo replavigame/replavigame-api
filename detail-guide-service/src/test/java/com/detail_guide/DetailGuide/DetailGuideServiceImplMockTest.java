@@ -157,8 +157,8 @@ public class DetailGuideServiceImplMockTest {
         //Assert
         
         assertEquals(1L,response.getId() );
-        assertEquals("name", response.getName());
-        assertEquals("url1", response.getVideoUrl());
+        assertEquals("request", response.getName());
+        assertEquals("videoUrl", response.getVideoUrl());
     }
 
     @Test
