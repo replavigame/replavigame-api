@@ -1,6 +1,10 @@
 server:
   port: 8092
 
+springdoc:
+  swagger-ui:
+    use-root-path: true
+
 spring:
   #DB
   datasource:
